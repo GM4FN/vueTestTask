@@ -14,7 +14,7 @@ export default {
   },
   computed: "",
   methods: "",
-  name: "button-Default",
+  name: "button-default-aside",
   props: {
     namePath: String,
   },

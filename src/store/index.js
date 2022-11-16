@@ -10,9 +10,70 @@ export default new Vuex.Store({
       { id: 2, slot: "К сотрудникам", namePath: "workerTableTab" },
       { id: 3, slot: "К статистике", namePath: "statisticTab" },
     ],
+    workerDisplayForm: false,
+    workerFormRaw: {
+      name: "",
+      gender: "",
+      age: "",
+      phone: "",
+      chief: "",
+    },
+    workerFormArr: [],
+    maybeChief: [],
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    hideWorkerForm(state) {
+      state.workerDisplayForm = false;
+    },
+    showWorkerForm(state) {
+      state.workerDisplayForm = true;
+    },
+    pushWorkerRaw(state, obj) {
+      let { name, value } = obj;
+      state.workerFormRaw[name] = value;
+    },
+    pushWorkerArr(state) {
+      // Лучше не смотреть на валидацию, вроде работает и хорошо...
+      for (const key in state.workerFormRaw) {
+        const element = state.workerFormRaw[key];
+        if (key == "name" && (element.match(/[0-9]/g) || !element.match(/[А-яA-z]/g))) {
+          alert("Имя должно содержать только буквы");
+          return false;
+        } else if (key == "gender" && !element.match(/[А-яA-z]/g)) {
+          alert("Введите пол");
+          return false;
+        } else if (
+          key == "age" &&
+          (!Number.isInteger(+element) || element.match(/[А-яA-z]/g) || +element < 18)
+        ) {
+          alert("Возраст должен быть >18");
+          return false;
+        } else if (key == "phone" && (element.match(/[А-яA-z]/g) || !element.match(/[0-9]/g))) {
+          alert("Введите телефон цифрами");
+          return false;
+        }
+      }
+      let cloneFormRaw = {};
+      for (const key in state.workerFormRaw) {
+        if (Object.hasOwnProperty.call(state.workerFormRaw, key)) {
+          cloneFormRaw[key] = state.workerFormRaw[key];
+        }
+      }
+      state.workerFormArr.push(cloneFormRaw);
+      state.maybeChief.push(cloneFormRaw.name);
+      state.workerFormRaw = {
+        name: "",
+        gender: "",
+        age: "",
+        phone: "",
+        chief: "",
+        parent: {},
+      };
+      if (cloneFormRaw.chief) {
+      }
+    },
+  },
   actions: {},
   modules: {},
 });

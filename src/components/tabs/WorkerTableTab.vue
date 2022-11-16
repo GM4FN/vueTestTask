@@ -1,24 +1,48 @@
 <template>
-  <section class="dd d-flex">
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
+  <section class="worker-tab d-flex flex-column align-items-center justify-content-start gap-5">
+    <button
+      type="button"
+      class="btn btn-outline-secondary rounded-pill mt-5"
+      @click="showForm">
+      Добавить
+    </button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Пол</th>
+          <th>Возраст</th>
+          <th>Номер телефона</th>
+        </tr>
+      </thead>
+      <tbody>
+        <worker-item
+          v-for="(table, index) in $store.state.workerFormArr"
+          :table="table"
+          :key="index"></worker-item>
+      </tbody>
+    </table>
+    <worker-form v-show="this.$store.state.workerDisplayForm"></worker-form>
   </section>
 </template>
+<script>
+import workerForm from "../WorkerForm.vue";
+import workerItem from "../WorkerItem.vue";
+
+export default {
+  components: { workerForm, workerItem },
+  data() {
+    return {};
+  },
+  methods: {
+    showForm() {
+      this.$store.commit("showWorkerForm");
+    },
+  },
+};
+</script>
 
 <style lang="sass" scoped>
-.dd
-  width: 85vw
+.worker-tab
+  width: 75vw
 </style>
