@@ -157,6 +157,7 @@ export default {
       this.$store.commit("hideWorkerForm");
     },
     pushDataArr() {
+      // this.$store.dispatch("pushArr");
       this.$store.commit("pushWorkerArr");
     },
   },

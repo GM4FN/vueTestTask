@@ -19,18 +19,19 @@
         <worker-item
           v-for="(table, index) in $store.state.workerFormArr"
           :table="table"
-          :key="index"></worker-item>
+          :key="index">
+        </worker-item>
       </tbody>
     </table>
     <worker-form v-show="this.$store.state.workerDisplayForm"></worker-form>
   </section>
 </template>
 <script>
-import workerForm from "../WorkerForm.vue";
-import workerItem from "../WorkerItem.vue";
-
 export default {
-  components: { workerForm, workerItem },
+  components: {
+    workerForm: () => import("../WorkerForm.vue"),
+    workerItem: () => import("../WorkerItem.vue"),
+  },
   data() {
     return {};
   },
