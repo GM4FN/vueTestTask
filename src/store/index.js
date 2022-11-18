@@ -21,6 +21,7 @@ export default new Vuex.Store({
     },
     workerFormArr: [],
     maybeChief: [],
+    normalFormArr: [],
   },
   getters: {},
   mutations: {
@@ -71,86 +72,52 @@ export default new Vuex.Store({
         chief: "",
         children: new Set(),
       };
+      state.workerFormArr.map((item, index) => {
+        checkChief(item, index);
+      });
       function checkChief(checking, index) {
         for (const propChild in checking) {
           state.workerFormArr.map((item) => {
             const elementChild = checking[propChild];
             if (typeof elementChild === "object" && elementChild.size > 0) {
-              checkChief(elementChild, index);
-              console.log("BUG");
+              for (const elem of elementChild) {
+                checkChief(elem, index);
+              }
             } else if (propChild == "chief" && elementChild != "") {
               if (item.name == elementChild) {
                 item.children.add(checking);
-                state.workerFormArr.splice(index, 1)
               }
             }
           });
         }
       }
-
-      state.workerFormArr.map((item, index) => {
-        checkChief(item, index);
+    },
+    doFormArrMain(state) {
+      state.normalFormArr.length = 0;
+      state.workerFormArr.map((itemArr) => {
+        if (itemArr.chief == "" || itemArr.chief == undefined) {
+          state.normalFormArr.push(itemArr);
+        }
+        // function deepClone(obj) {
+        //   const clObj = {};
+        //   for (const i in obj) {
+        //     if (typeof obj[i] === "object" && obj[i].size > 0) {
+        //       for (const iterator of obj[i]) {
+        //         clObj[i] = iterator;
+        //         if (typeof iterator === "object" && iterator.size > 0) {
+        //           deepClone(iterator);
+        //         }
+        //       }
+        //       continue;
+        //     }
+        //     clObj[i] = obj[i];
+        //   }
+        //   return clObj;
+        // }
+  
       });
     },
-    childCheckingPush(state) {
-      // let checking1 = checking;
-      //   let chief;
-      //   for (const prop in checking) {
-      //     if (typeof checking[prop] === "object" && checking[prop].size !== 0) {
-      //       console.log("pizda");
-      //       checkChief(checking[prop]);
-      //     } else if (prop == "chief" && checking[prop] !== "") {
-      //       chief = checking[prop];
-      //       console.log("Передалось");
-      //       for (const prop1 in checking) {
-      //         console.log(checking[prop1]);
-      //         if (prop1 == "name" && checking1[prop1] == checking[prop]) {
-      //         }
-      //       }
-      //       // state.workerFormArr.children.add(checking);
-      //       // checking = null;
-      //     }
-      //   }
-      //
-      //
-      // checkChief(state);
-      // state.workerFormArr.map((item, index) => {
-      //   if (item.children.size == 0) {
-      //     checkChief(item, index);
-      //   } else if (item.children.size != 0) {
-      //     console.log("Есть дети");
-      //     while (item.children.size != 0) {
-      //       checkChief(item, index);
-      //     }
-      //   }
-      // });
-      // function checkChief(item, index) {
-      //   // Поиск у кого есть шеф
-      //   for (const key in item) {
-      //     const chief = item[key];
-      //     if (key == "chief" && chief !== "") {
-      //       let child = item;
-      //       console.log(item.name);
-      //       // --------
-      //       state.workerFormArr.map((item1) => {
-      //         for (const key1 in item1) {
-      //           const element = item1[key1];
-      //           if (key1 == "name" && element == chief) {
-      //             item1.children.add(child);
-      //             state.workerFormArr.splice(index, 1);
-      //           }
-      //         }
-      //       });
-      //     }
-      //   }
-      // }
-    },
   },
-  actions: {
-    pushArr(state) {
-      state.commit("pushWorkerArr");
-      state.commit("childCheckingPush");
-    },
-  },
+  actions: {},
   modules: {},
 });

@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <worker-item
-          v-for="(table, index) in $store.state.workerFormArr"
+          v-for="(table, index) in $store.state.normalFormArr"
           :table="table"
           :key="index">
         </worker-item>

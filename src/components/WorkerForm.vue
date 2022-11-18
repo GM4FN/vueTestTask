@@ -41,7 +41,7 @@
             Выберите ваш пол
           </option>
           <option value="Женский">Женский</option>
-          <option value="Мужсой">Мужской</option>
+          <option value="Мужской">Мужской</option>
           <option value="Неизвестно">Оно</option>
         </select>
       </div>
@@ -157,8 +157,8 @@ export default {
       this.$store.commit("hideWorkerForm");
     },
     pushDataArr() {
-      // this.$store.dispatch("pushArr");
       this.$store.commit("pushWorkerArr");
+      this.$store.commit("doFormArrMain");
     },
   },
   name: "worker-form",
