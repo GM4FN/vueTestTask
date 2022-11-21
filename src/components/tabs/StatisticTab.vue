@@ -1,34 +1,25 @@
 <template>
-  <div class="dd d-flex">
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis enim sequi doloribus ex
-      soluta omnis, quibusdam quis vero rem labore, modi dolores id atque, a ab unde! Ad, voluptate
-      earum!
-    </div>
+  <div class="d-flex">
+    <!-- checkStatistic -->
+    <bar-statistic></bar-statistic>
+    <pie-statistic></pie-statistic>
   </div>
 </template>
 
+<script>
+import barStatistic from "../AgeWorkersBar.vue";
+import pieStatistic from "../GenderWorkersPie.vue";
+export default {
+  components: {
+    barStatistic,
+    pieStatistic,
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+};
+</script>
 <style lang="sass" scoped>
-.dd
-  width: 85vw
+
 </style>

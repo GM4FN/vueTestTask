@@ -1,28 +1,43 @@
 <template>
-  <section class="worker-tab d-flex flex-column align-items-center justify-content-start gap-5">
-    <button
-      type="button"
-      class="btn btn-outline-secondary rounded-pill mt-5"
-      @click="showForm">
-      Добавить
-    </button>
-    <table class="table">
+  <section class="worker-tab d-flex flex-column gap-5">
+    <div class="d-flex justify-content-around">
+      <button
+        type="button"
+        class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
+        @click="displayChild">
+        Показать дочерние
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
+        @click="showForm">
+        Добавить
+      </button>
+    </div>
+
+    <div>
+      <b-table
+        striped
+        hover
+        :items="items"
+        :fields="fields"></b-table>
+    </div>
+    <!-- <table class="table">
       <thead>
         <tr>
           <th>Имя</th>
           <th>Пол</th>
           <th>Возраст</th>
-          <th>Номер телефона</th>
+          <th>Телефон</th>
         </tr>
       </thead>
+
       <tbody>
-        <worker-item
-          v-for="(table, index) in $store.state.normalFormArr"
-          :table="table"
-          :key="index">
-        </worker-item>
+        
       </tbody>
-    </table>
+    </table> -->
+    <worker-item> </worker-item>
+
     <worker-form v-show="this.$store.state.workerDisplayForm"></worker-form>
   </section>
 </template>
@@ -39,6 +54,16 @@ export default {
     showForm() {
       this.$store.commit("showWorkerForm");
     },
+    displayChild() {
+      this.$store.commit("displayChild");
+    },
+  },
+  computed: {
+    // items: {
+    //   get() {
+    //     return this.$store.state.normalFormArr;
+    //   },
+    // },
   },
 };
 </script>

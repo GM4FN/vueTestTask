@@ -42,7 +42,7 @@
           </option>
           <option value="Женский">Женский</option>
           <option value="Мужской">Мужской</option>
-          <option value="Неизвестно">Оно</option>
+          <option value="Неизвестно">Неизвестно</option>
         </select>
       </div>
       <div class="input-group mb-3">
@@ -159,6 +159,7 @@ export default {
     pushDataArr() {
       this.$store.commit("pushWorkerArr");
       this.$store.commit("doFormArrMain");
+      this.$store.commit("checkStatistic");
     },
   },
   name: "worker-form",

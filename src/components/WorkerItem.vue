@@ -1,42 +1,58 @@
 <template>
-  <tr>
+  <div>
+    <b-table
+      striped
+      hover
+      :items="items"
+      :fields="fields"
+      label-sort-asc=""
+      label-sort-desc=""
+      label-sort-clear=""></b-table>
+    <!-- <worker-item v-for="table of items"> </worker-item> -->
+  </div>
+  <!-- <tr >
     <td>{{ table.name }}</td>
     <td>{{ table.gender }}</td>
     <td>{{ table.age }}</td>
     <td>{{ table.phone }}</td>
     <worker-item
-      v-for="(table, prop, index) of this.table.children"
+      v-for="(table, prop, index) of child"
       :table="table"
+      v-show="this.$store.state.tableChildDisplay"
       :key="table.name">
     </worker-item>
-  </tr>
+  </tr> -->
 </template>
 
 <script>
 export default {
   name: "worker-item",
   props: ["table"],
-  computed: {
-    // child: {
-    //   i: "pop",
-    //   get() {},
-    //   set() {
-    //     for (const prop in this.table) {
-    //       const element = this.table[prop];
-    //       if (typeof element === "object" && element.size > 0) {
-    //         console.log(element);
-    //         return element.keys();
-    //         for (const i of element) {
-    //           console.log(i);
-    //           return i;
-    //         }
-    //       }
-    //     }
-    //   },
-    // },
-  },
   data() {
-    return {};
+    return {
+      fields: [
+        { key: "name", sortable: true, label: "Имя" },
+        { key: "gender", sortable: true, label: "Пол" },
+        { key: "age", sortable: true, label: "Возраст" },
+        { key: "phone", sortable: false, label: "Телефон" },
+        { key: "children", sortable: false, label: "Дочерний" },
+      ],
+    };
+  },
+  computed: {
+    child: {
+      get() {
+        return this.table.children;
+      },
+    },
+    items: {
+      items: [],
+      get() {
+        return this.$store.state.normalFormArr;
+      },
+    },
   },
 };
 </script>
+
+<style lang="sass"></style>

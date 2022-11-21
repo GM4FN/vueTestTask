@@ -22,6 +22,10 @@ export default new Vuex.Store({
     workerFormArr: [],
     maybeChief: [],
     normalFormArr: [],
+    tableChildDisplay: true,
+    agesWorkers: [],
+    namesWorkers: [],
+    genderCountWorkers: [],
   },
   getters: {},
   mutations: {
@@ -30,6 +34,13 @@ export default new Vuex.Store({
     },
     showWorkerForm(state) {
       state.workerDisplayForm = true;
+    },
+    displayChild(state) {
+      if (state.tableChildDisplay == false) {
+        state.tableChildDisplay = true;
+      } else {
+        state.tableChildDisplay = false;
+      }
     },
     pushWorkerRaw(state, obj) {
       let { name, value } = obj;
@@ -47,9 +58,12 @@ export default new Vuex.Store({
           return false;
         } else if (
           key == "age" &&
-          (!Number.isInteger(+element) || element.match(/[А-яA-z]/g) || +element < 18)
+          (!Number.isInteger(+element) ||
+            element.match(/[А-яA-z]/g) ||
+            +element < 18 ||
+            +element > 120)
         ) {
-          alert("Возраст должен быть >18");
+          alert("Возраст должен быть >18, но <120");
           return false;
         } else if (key == "phone" && (element.match(/[А-яA-z]/g) || !element.match(/[0-9]/g))) {
           alert("Введите телефон цифрами");
@@ -114,8 +128,43 @@ export default new Vuex.Store({
         //   }
         //   return clObj;
         // }
-  
       });
+    },
+    checkStatistic(state) {
+      let checkArrAges = [];
+      let checkArrNames = [];
+      let checkArrGender = [0, 0, 0];
+      state.normalFormArr.map((item) => {
+        checkingStats(item);
+      });
+      function checkingStats(obj) {
+        for (const key in obj) {
+          const element = obj[key];
+          if (typeof element === "object" && element.size > 0) {
+            for (const elem of element) {
+              checkingStats(elem);
+            }
+          } else if (key == "age") {
+            checkArrAges.push(element);
+          }
+          if (key == "name") {
+            checkArrNames.push(element);
+          }
+          if (key == "gender" && element == "Мужской") {
+            checkArrGender[0]++;
+          } else if (key == "gender" && element == "Женский") {
+            checkArrGender[1]++;
+          } else if (key == "gender" && element == "Неизвестно") {
+            checkArrGender[2]++;
+          }
+        }
+      }
+      state.namesWorkers.length = 0;
+      state.agesWorkers.length = 0;
+      state.genderCountWorkers.length = 0;
+      checkArrGender.map((item) => state.genderCountWorkers.push(item));
+      checkArrAges.map((item) => state.agesWorkers.push(item));
+      checkArrNames.map((item) => state.namesWorkers.push(item));
     },
   },
   actions: {},

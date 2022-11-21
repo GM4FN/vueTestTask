@@ -27,7 +27,7 @@ export default {
 <style lang="sass" scoped>
 aside
   width: 25%
-  // height: 
+  height: 100vh
   &.d-flex
     padding: 10px
     padding-right: 25px
