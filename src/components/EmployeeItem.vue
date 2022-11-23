@@ -7,9 +7,40 @@
       :fields="fields"
       label-sort-asc=""
       label-sort-desc=""
-      label-sort-clear=""></b-table>
-    <!-- <worker-item v-for="table of items"> </worker-item> -->
+      label-sort-clear="">
+      <!-- <b-tr v-for="child in items.children">
+        <b-td>
+          {{ child.name }}
+        </b-td>
+        <b-td>
+          {{ child.gender }}
+        </b-td>
+        <b-td>
+          {{ child.age }}
+        </b-td>
+        <b-td>
+          {{ child.phone }}
+        </b-td>
+      </b-tr> -->
+      <template #thead-top>
+        <b-tr>
+          <b-td></b-td>
+          <b-td>dasdsa </b-td>
+          <b-td>dasdas</b-td>
+          <b-td>dasdas</b-td>
+        </b-tr>
+      </template>
+      <template>
+        <b-tr>
+          <b-td> жопа </b-td>
+          <b-td> попа </b-td>
+          <b-td> папа </b-td>
+          <b-td> папап </b-td>
+        </b-tr>
+      </template>
+    </b-table>
   </div>
+  <!-- <worker-item v-for="table of items"> </worker-item> -->
   <!-- <tr >
     <td>{{ table.name }}</td>
     <td>{{ table.gender }}</td>
@@ -27,7 +58,7 @@
 <script>
 export default {
   name: "worker-item",
-  props: ["table"],
+  props: [],
   data() {
     return {
       fields: [
@@ -35,23 +66,11 @@ export default {
         { key: "gender", sortable: true, label: "Пол" },
         { key: "age", sortable: true, label: "Возраст" },
         { key: "phone", sortable: false, label: "Телефон" },
-        { key: "children", sortable: false, label: "Дочерний" },
       ],
+      items: this.$store.state.employeesFormData,
     };
   },
-  computed: {
-    child: {
-      get() {
-        return this.table.children;
-      },
-    },
-    items: {
-      items: [],
-      get() {
-        return this.$store.state.normalFormArr;
-      },
-    },
-  },
+  computed: {},
 };
 </script>
 

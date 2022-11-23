@@ -4,24 +4,11 @@
       <button
         type="button"
         class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
-        @click="displayChild">
-        Показать дочерние
-      </button>
-      <button
-        type="button"
-        class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
         @click="showForm">
         Добавить
       </button>
     </div>
 
-    <div>
-      <b-table
-        striped
-        hover
-        :items="items"
-        :fields="fields"></b-table>
-    </div>
     <!-- <table class="table">
       <thead>
         <tr>
@@ -36,26 +23,23 @@
         
       </tbody>
     </table> -->
-    <worker-item> </worker-item>
+    <worker-item></worker-item>
 
-    <worker-form v-show="this.$store.state.workerDisplayForm"></worker-form>
+    <worker-form v-show="this.$store.state.formIsDisplay"></worker-form>
   </section>
 </template>
 <script>
 export default {
   components: {
-    workerForm: () => import("../WorkerForm.vue"),
-    workerItem: () => import("../WorkerItem.vue"),
+    workerForm: () => import("../EmployeeForm.vue"),
+    workerItem: () => import("../EmployeeItem.vue"),
   },
   data() {
     return {};
   },
   methods: {
     showForm() {
-      this.$store.commit("showWorkerForm");
-    },
-    displayChild() {
-      this.$store.commit("displayChild");
+      this.$store.commit("showForm");
     },
   },
   computed: {

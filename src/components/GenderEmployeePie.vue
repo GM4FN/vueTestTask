@@ -60,7 +60,7 @@ export default {
         datasets: [
           {
             backgroundColor: ["#34bfed", "#d2e620", "#cf1f5f"],
-            data: this.$store.state.genderCountWorkers,
+            data: this.$store.state.genderPercent,
           },
         ],
       },

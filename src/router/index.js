@@ -4,15 +4,11 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: () => import("../components/tabs/MainTab.vue"),
-  },
+
   {
     path: "/workers",
     name: "workerTableTab",
-    component: () => import("../components/tabs/WorkerTableTab.vue"),
+    component: () => import("../components/tabs/EmployeeTableTab.vue"),
   },
   {
     path: "/statistic",

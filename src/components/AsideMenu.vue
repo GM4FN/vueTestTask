@@ -2,13 +2,13 @@
   <aside
     class="d-flex flex-column border-end border-2 border-secondary justify-content-center gap-5 bg-light">
     <button-default-aside
-      v-for="button in $store.state.btnDataAside"
+      v-for="button in $store.state.buttonsAsideData"
       :key="button.id"
       :namePath="button.namePath"
       class="btn btn-outline-primary"
-      @click="$router.push({ name: namePath })"
-      >{{ button.slot }}</button-default-aside
-    >
+      @click="$router.push({ name: namePath })">
+      {{ button.slot }}
+    </button-default-aside>
   </aside>
 </template>
 

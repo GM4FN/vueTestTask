@@ -1,14 +1,13 @@
 <template>
   <div class="d-flex">
-    <!-- checkStatistic -->
     <bar-statistic></bar-statistic>
     <pie-statistic></pie-statistic>
   </div>
 </template>
 
 <script>
-import barStatistic from "../AgeWorkersBar.vue";
-import pieStatistic from "../GenderWorkersPie.vue";
+import barStatistic from "../AgeEmployeeBar.vue";
+import pieStatistic from "../GenderEmployeePie.vue";
 export default {
   components: {
     barStatistic,
