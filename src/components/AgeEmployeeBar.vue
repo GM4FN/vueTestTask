@@ -50,13 +50,13 @@ export default {
   data() {
     return {
       chartData: {
-        labels: this.$store.state.namesWorkers,
+        labels: this.$store.state.namesEmployees,
         // this.$store.state.agesWorkers
         datasets: [
           {
             label: "Возраст",
             backgroundColor: "#f87979",
-            data: this.$store.state.agesWorkers,
+            data: this.$store.state.agesEmployees,
           },
         ],
       },

@@ -8,7 +8,6 @@
         Добавить
       </button>
     </div>
-
     <!-- <table class="table">
       <thead>
         <tr>
@@ -23,16 +22,15 @@
         
       </tbody>
     </table> -->
-    <worker-item></worker-item>
-
-    <worker-form v-show="this.$store.state.formIsDisplay"></worker-form>
+    <employee-table></employee-table>
+    <employee-form v-show="this.$store.state.formIsDisplay"></employee-form>
   </section>
 </template>
 <script>
 export default {
   components: {
-    workerForm: () => import("../EmployeeForm.vue"),
-    workerItem: () => import("../EmployeeItem.vue"),
+    employeeForm: () => import("../EmployeeForm.vue"),
+    employeeTable: () => import("../EmployeeTable.vue"),
   },
   data() {
     return {};
@@ -42,13 +40,7 @@ export default {
       this.$store.commit("showForm");
     },
   },
-  computed: {
-    // items: {
-    //   get() {
-    //     return this.$store.state.normalFormArr;
-    //   },
-    // },
-  },
+  computed: {},
 };
 </script>
 

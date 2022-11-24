@@ -10,36 +10,26 @@
         @click="hideForm"></button>
       <div class="align-self-center mb-2">Добавить сотрудника</div>
       <name-input></name-input>
-      <alert-message v-show="this.$store.state.alerts.nameAlert">
-        Имя должно содержать только буквы
-      </alert-message>
+      <alert-message v-show="alertName"> Имя должно содержать только буквы </alert-message>
       <gender-input></gender-input>
-      <alert-message v-show="this.$store.state.alerts.nameAlert"> Введите пол </alert-message>
+      <alert-message v-show="alertGender"> Введите пол </alert-message>
       <age-input></age-input>
-      <alert-message v-show="this.$store.state.alerts.nameAlert">
-        Вы должны быть старше 18, но младше 120...
-      </alert-message>
+      <alert-message v-show="alertAge"> Вы должны быть старше 18, но младше 120... </alert-message>
       <phone-input></phone-input>
-      <alert-message v-show="this.$store.state.alerts.nameAlert">
-        Введите телефон цифрами
-      </alert-message>
+      <alert-message v-show="alertPhone"> Введите телефон цифрами </alert-message>
       <chief-input></chief-input>
       <button
         class="btn btn-primary align-self-center"
+        :disabled="buttonIsDisabled"
         @click="setData">
         Заполнить
       </button>
     </form>
   </section>
 </template>
-<!-- 1 Имя(буквы валид) !!обязательно
-    2 Пол !!обязательно
-    3 Возраст(>18 валид) !!обязательно
-    4 Номер тлф !!обязательно
-    5 select(кто наставник) -->
 <script>
 export default {
-  name: "worker-form",
+  name: "employee-form",
   components: {
     nameInput: () => import("./Inputs/NameInput.vue"),
     genderInput: () => import("./Inputs/GenderInput.vue"),
@@ -51,17 +41,39 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    buttonIsDisabled: {
+      get() {
+        return this.$store.state.buttonFormIsDisabled;
+      },
+    },
+    alertName: {
+      get() {
+        return this.$store.state.alerts.nameAlert;
+      },
+    },
+    alertGender: {
+      get() {
+        return this.$store.state.alerts.genderAlert;
+      },
+    },
+    alertAge: {
+      get() {
+        return this.$store.state.alerts.ageAlert;
+      },
+    },
+    alertPhone: {
+      get() {
+        return this.$store.state.alerts.phoneAlert;
+      },
+    },
+  },
   methods: {
     hideForm() {
       this.$store.commit("hideForm");
     },
     setData() {
-      // this.$store.commit("validateEmployee")
-      this.$store.commit("pushWorkerArr");
-      this.$store.commit("doFormArrMain");
-      this.$store.commit("checkStatistic");
-      this.$store.commit("calculatePercentGender");
+      this.$store.dispatch("setAllData");
     },
   },
 };

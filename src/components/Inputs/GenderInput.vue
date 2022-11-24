@@ -7,11 +7,10 @@
     </span>
     <select
       class="form-select"
-      aria-label="Default select example"
       v-model="gender"
-      required>
+      @change="validateInput">
       <option
-        disabled
+        value=""
         selected>
         Выберите ваш пол
       </option>
@@ -36,6 +35,31 @@ export default {
       set(value) {
         this.$store.commit("addEmployee", { name: "gender", value });
       },
+    },
+    checkAlerts: {
+      get() {
+        return this.$store.getters.checkAlerts;
+      },
+    },
+    checkEmployeeInput: {
+      get() {
+        return this.$store.getters.checkEmployeeInput;
+      },
+    },
+  },
+  methods: {
+    validateInput() {
+      if (this.$store.state.employeeInput.gender === "") {
+        this.$store.commit("enableAlertInput", "genderAlert");
+        this.$store.commit("disableButtonForm");
+      } else {
+        this.$store.commit("disableAlertInput", "genderAlert");
+        if (this.checkAlerts || this.checkEmployeeInput) {
+          this.$store.commit("disableButtonForm");
+        } else {
+          this.$store.commit("enableButtonForm");
+        }
+      }
     },
   },
 };

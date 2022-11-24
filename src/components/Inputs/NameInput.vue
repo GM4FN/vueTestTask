@@ -5,33 +5,18 @@
       id="basic-addon1">
       Имя
     </span>
-    <ValidationProvider
-      rules="alpha|required"
-      v-slot="v">
-      <input
-        name="name"
-        type="text"
-        class="form-control"
-        placeholder="Как зовут"
-        :value="name"
-        @change="onInputChanged" />
-    </ValidationProvider>
+    <input
+      name="name"
+      type="text"
+      class="form-control"
+      placeholder="Как зовут"
+      v-model="name"
+      @keyup="validateInput" />
   </div>
 </template>
 
 <script>
-import { ValidationProvider, extend } from "vee-validate";
-import { alpha, required } from "vee-validate/dist/rules";
-
-extend("alpha", { ...alpha, message: "Введите буквы" });
-extend("required", {
-  ...required,
-  message: "Это поле обязательно",
-});
 export default {
-  components: {
-    ValidationProvider,
-  },
   name: "name-input",
   data() {
     return {};
@@ -45,10 +30,33 @@ export default {
         this.$store.commit("addEmployee", { name: "name", value });
       },
     },
+    checkAlerts: {
+      get() {
+        return this.$store.getters.checkAlerts;
+      },
+    },
+    checkEmployeeInput: {
+      get() {
+        return this.$store.getters.checkEmployeeInput;
+      },
+    },
   },
   methods: {
-    onInputChanged(value) {
-      this.$store.commit("addEmployee", { name: "name", value })
+    validateInput() {
+      if (
+        !this.$store.state.employeeInput.name.match(/[А-яA-z]/g) ||
+        this.$store.state.employeeInput.name.match(/[0-9]/g)
+      ) {
+        this.$store.commit("enableAlertInput", "nameAlert");
+        this.$store.commit("disableButtonForm");
+      } else {
+        this.$store.commit("disableAlertInput", "nameAlert");
+        if (this.checkAlerts || this.checkEmployeeInput) {
+          this.$store.commit("disableButtonForm");
+        } else {
+          this.$store.commit("enableButtonForm");
+        }
+      }
     },
   },
 };

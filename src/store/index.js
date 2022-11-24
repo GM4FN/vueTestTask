@@ -10,13 +10,13 @@ export default new Vuex.Store({
       { id: 3, slot: "К статистике", namePath: "statisticTab" },
     ],
     formIsDisplay: false,
+    buttonFormIsDisabled: true,
     alerts: {
       nameAlert: false,
-      ganderAlert: false,
+      genderAlert: false,
       ageAlert: false,
       phoneAlert: false,
     },
-
     employeeInput: {
       name: "",
       gender: "",
@@ -28,12 +28,37 @@ export default new Vuex.Store({
     employeeFormRaw: [],
     maybeChief: [],
     employeesFormData: [],
+    employeeTableData: new Set(),
     agesEmployees: [],
     namesEmployees: [],
     genderCount: [],
     genderPercent: [],
   },
-  getters: {},
+  getters: {
+    checkAlerts(state) {
+      for (const key in state.alerts) {
+        if (Object.hasOwnProperty.call(state.alerts, key)) {
+          const element = state.alerts[key];
+          if (element) {
+            return element;
+          }
+        }
+      }
+    },
+    checkEmployeeInput(state) {
+      for (const key in state.employeeInput) {
+        if (Object.hasOwnProperty.call(state.employeeInput, key)) {
+          const element = state.employeeInput[key];
+          if (element === "" && key !== "chief" && key !== "children") {
+            return true;
+          }
+        }
+      }
+    },
+    childEmployees(state) {
+      return state.employeesFormData.children;
+    },
+  },
   mutations: {
     hideForm(state) {
       state.formIsDisplay = false;
@@ -41,44 +66,23 @@ export default new Vuex.Store({
     showForm(state) {
       state.formIsDisplay = true;
     },
-    alertForm(state, nameAlert) {
-      for (const key in state.alerts) {
-        if (Object.hasOwnProperty.call(state.typeAlert, key)) {
-          const element = state.typeAlert[key];
-          key === nameAlert && element === false ? (element = true) : (element = false);
-        }
-      }
-    },
     addEmployee(state, obj) {
       let { name, value } = obj;
       state.employeeInput[name] = value;
     },
-    validateEmployee(state, nameAlert) {},
-    pushWorkerArr(state) {
-      // Лучше не смотреть на валидацию, вроде работает и хорошо...
-      // for (const key in state.employeeInput) {
-      //   const element = state.employeeInput[key];
-      //   if (key == "name" && (element.match(/[0-9]/g) || !element.match(/[А-яA-z]/g))) {
-      //     alert("Имя должно содержать только буквы");
-      //     return false;
-      //   } else if (key == "gender" && !element.match(/[А-яA-z]/g)) {
-      //     alert("Введите пол");
-      //     return false;
-      //   } else if (
-      //     key == "age" &&
-      //     (!Number.isInteger(+element) ||
-      //       element.match(/[А-яA-z]/g) ||
-      //       +element < 18 ||
-      //       +element > 120)
-      //   ) {
-      //     alert("Возраст должен быть >18, но <120");
-      //     return false;
-      //   } else if (key == "phone" && (element.match(/[А-яA-z]/g) || !element.match(/[0-9]/g))) {
-      //     alert("Введите телефон цифрами");
-      //     return false;
-      //   }
-      // }
-
+    enableButtonForm(state) {
+      state.buttonFormIsDisabled = false;
+    },
+    disableButtonForm(state) {
+      state.buttonFormIsDisabled = true;
+    },
+    enableAlertInput(state, typeAlert) {
+      state.alerts[typeAlert] = true;
+    },
+    disableAlertInput(state, typeAlert) {
+      state.alerts[typeAlert] = false;
+    },
+    setEmployeeFormRaw(state) {
       let cloneFormRaw = {};
       for (const key in state.employeeInput) {
         if (Object.hasOwnProperty.call(state.employeeInput, key)) {
@@ -95,19 +99,33 @@ export default new Vuex.Store({
         chief: "",
         children: new Set(),
       };
-      state.employeeFormRaw.map((item, index) => {
-        checkChief(item, index);
+    },
+    formatEmployeeFormRaw(state) {
+      state.employeeFormRaw = state.employeeFormRaw.map((item, index) => {
+        console.log(item.name);
+        return (item = [
+          ["name", item.name],
+          ["gender", item.gender],
+          ["age", item.age],
+          ["phone", item.phone],
+          ["chief", item.chief],
+        ]);
       });
-      function checkChief(checking, index) {
+    },
+    setChildrenRaw(state) {
+      state.employeeFormRaw.map((item) => {
+        checkChief(item);
+      });
+      function checkChief(checking) {
         for (const propChild in checking) {
           state.employeeFormRaw.map((item) => {
             const elementChild = checking[propChild];
             if (typeof elementChild === "object" && elementChild.size > 0) {
               for (const elem of elementChild) {
-                checkChief(elem, index);
+                checkChief(elem);
               }
-            } else if (propChild == "chief" && elementChild != "") {
-              if (item.name == elementChild) {
+            } else if (propChild === "chief" && elementChild !== "") {
+              if (item.name === elementChild) {
                 item.children.add(checking);
               }
             }
@@ -115,18 +133,18 @@ export default new Vuex.Store({
         }
       }
     },
-    doFormArrMain(state) {
+    setEmployeesData(state) {
       state.employeesFormData.length = 0;
       state.employeeFormRaw.map((itemArr) => {
-        if (itemArr.chief == "" || itemArr.chief == undefined) {
+        if (itemArr.chief === "" || itemArr.chief == undefined) {
           state.employeesFormData.push(itemArr);
         }
       });
     },
-    checkStatistic(state) {
-      let checkArrAges = [];
-      let checkArrNames = [];
-      let checkArrGender = [0, 0, 0];
+    setStatistic(state) {
+      let checkAges = [];
+      let checkNames = [];
+      let checkGender = [0, 0, 0];
       state.employeesFormData.map((item) => {
         checkingStats(item);
       });
@@ -137,29 +155,30 @@ export default new Vuex.Store({
             for (const elem of element) {
               checkingStats(elem);
             }
-          } else if (key == "age") {
-            checkArrAges.push(element);
           }
-          if (key == "name") {
-            checkArrNames.push(element);
+          if (key === "age") {
+            checkAges.push(element);
           }
-          if (key == "gender" && element == "Мужской") {
-            checkArrGender[0]++;
-          } else if (key == "gender" && element == "Женский") {
-            checkArrGender[1]++;
-          } else if (key == "gender" && element == "Неизвестно") {
-            checkArrGender[2]++;
+          if (key === "name") {
+            checkNames.push(element);
+          }
+          if (key === "gender" && element === "Мужской") {
+            checkGender[0]++;
+          } else if (key === "gender" && element === "Женский") {
+            checkGender[1]++;
+          } else if (key === "gender" && element === "Неизвестно") {
+            checkGender[2]++;
           }
         }
       }
       state.namesEmployees.length = 0;
       state.agesEmployees.length = 0;
       state.genderCount.length = 0;
-      checkArrGender.map((item) => state.genderCount.push(item));
-      checkArrAges.map((item) => state.agesEmployees.push(item));
-      checkArrNames.map((item) => state.namesEmployees.push(item));
+      checkGender.map((item) => state.genderCount.push(item));
+      checkAges.map((item) => state.agesEmployees.push(item));
+      checkNames.map((item) => state.namesEmployees.push(item));
     },
-    calculatePercentGender(state) {
+    setPercentGender(state) {
       let genderValue = 0;
       state.genderCount.map((item) => {
         genderValue += item;
@@ -168,7 +187,35 @@ export default new Vuex.Store({
         return (item = Math.floor((item / genderValue) * 100));
       });
     },
+    // делит
+    setEmployeeTableData(state) {
+      state.employeesFormData.map((item) => {
+        checkEmployeeFormData(item);
+      });
+      function checkEmployeeFormData(obj) {
+        for (const key in obj) {
+          const element = obj[key];
+          if (typeof element === "object" && element.size > 0) {
+            for (const elem of element) {
+              checkEmployeeFormData(elem);
+            }
+          }
+          state.employeeTableData.add(obj);
+        }
+      }
+    },
   },
-  actions: {},
+  actions: {
+    setAllData(state) {
+      state.commit("setEmployeeFormRaw");
+      state.commit("setChildrenRaw");
+      state.commit("setEmployeesData");
+      state.commit("setStatistic");
+      state.commit("setPercentGender");
+      state.commit("formatEmployeeFormRaw");
+      state.commit("setEmployeeTableData");
+      state.commit("disableButtonForm");
+    },
+  },
   modules: {},
 });

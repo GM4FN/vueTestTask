@@ -9,10 +9,8 @@
       type="text"
       class="form-control"
       placeholder="Сколько лет"
-      aria-label="Username"
-      aria-describedby="basic-addon1"
       v-model="age"
-      required />
+      @keyup="validateInput" />
   </div>
 </template>
 
@@ -30,6 +28,36 @@ export default {
       set(value) {
         this.$store.commit("addEmployee", { name: "age", value });
       },
+    },
+    checkAlerts: {
+      get() {
+        return this.$store.getters.checkAlerts;
+      },
+    },
+    checkEmployeeInput: {
+      get() {
+        return this.$store.getters.checkEmployeeInput;
+      },
+    },
+  },
+  methods: {
+    validateInput() {
+      if (
+        !Number.isInteger(+this.$store.state.employeeInput.age) ||
+        this.$store.state.employeeInput.age.match(/[А-яA-z]/g) ||
+        +this.$store.state.employeeInput.age < 18 ||
+        +this.$store.state.employeeInput.age > 120
+      ) {
+        this.$store.commit("enableAlertInput", "ageAlert");
+        this.$store.commit("disableButtonForm");
+      } else {
+        this.$store.commit("disableAlertInput", "ageAlert");
+        if (this.checkAlerts || this.checkEmployeeInput) {
+          this.$store.commit("disableButtonForm");
+        } else {
+          this.$store.commit("enableButtonForm");
+        }
+      }
     },
   },
 };
