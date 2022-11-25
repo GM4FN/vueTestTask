@@ -23,7 +23,6 @@ export default new Vuex.Store({
       age: "",
       phone: "",
       chief: "",
-      children: new Set(),
     },
     employeeData: [],
     maybeChief: [],
@@ -47,7 +46,7 @@ export default new Vuex.Store({
       for (const key in state.employeeInput) {
         if (Object.hasOwnProperty.call(state.employeeInput, key)) {
           const element = state.employeeInput[key];
-          if (element === "" && key !== "chief" && key !== "children") {
+          if (element === "" && key !== "chief") {
             return true;
           }
         }
@@ -92,7 +91,6 @@ export default new Vuex.Store({
         age: "",
         phone: "",
         chief: "",
-        children: new Set(),
       };
     },
     formatEmployeeFormRaw(state) {
