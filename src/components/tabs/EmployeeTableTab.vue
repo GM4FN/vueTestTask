@@ -8,20 +8,6 @@
         Добавить
       </button>
     </div>
-    <!-- <table class="table">
-      <thead>
-        <tr>
-          <th>Имя</th>
-          <th>Пол</th>
-          <th>Возраст</th>
-          <th>Телефон</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        
-      </tbody>
-    </table> -->
     <employee-table></employee-table>
     <employee-form v-show="this.$store.state.formIsDisplay"></employee-form>
   </section>

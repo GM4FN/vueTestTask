@@ -27,7 +27,7 @@ export default {
   computed: {
     chief: {
       get() {
-        return this.$store.state.employeeFormRaw.chief;
+        return this.$store.state.employeeData.chief;
       },
       set(value) {
         this.$store.commit("addEmployee", { name: "chief", value });

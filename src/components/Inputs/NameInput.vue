@@ -24,7 +24,7 @@ export default {
   computed: {
     name: {
       get() {
-        return this.$store.state.employeeFormRaw.name;
+        return this.$store.state.employeeData.name;
       },
       set(value) {
         this.$store.commit("addEmployee", { name: "name", value });

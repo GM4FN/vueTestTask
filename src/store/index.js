@@ -25,10 +25,8 @@ export default new Vuex.Store({
       chief: "",
       children: new Set(),
     },
-    employeeFormRaw: [],
+    employeeData: [],
     maybeChief: [],
-    employeesFormData: [],
-    employeeTableData: new Set(),
     agesEmployees: [],
     namesEmployees: [],
     genderCount: [],
@@ -54,9 +52,6 @@ export default new Vuex.Store({
           }
         }
       }
-    },
-    childEmployees(state) {
-      return state.employeesFormData.children;
     },
   },
   mutations: {
@@ -89,7 +84,7 @@ export default new Vuex.Store({
           cloneFormRaw[key] = state.employeeInput[key];
         }
       }
-      state.employeeFormRaw.push(cloneFormRaw);
+      state.employeeData.push(cloneFormRaw);
       state.maybeChief.push(cloneFormRaw.name);
       state.employeeInput = {
         name: "",
@@ -101,61 +96,32 @@ export default new Vuex.Store({
       };
     },
     formatEmployeeFormRaw(state) {
-      state.employeeFormRaw = state.employeeFormRaw.map((item, index) => {
-        console.log(item.name);
-        return (item = [
-          ["name", item.name],
-          ["gender", item.gender],
-          ["age", item.age],
-          ["phone", item.phone],
-          ["chief", item.chief],
-        ]);
+      state.employeeData.map((item, index) => {
+        state.employeeData.map((itemChild) => {
+          if (item.name === itemChild.chief) {
+            let indexOfMinus = item.name.lastIndexOf("-");
+            itemChild.name = "-" + item.name.slice(0, indexOfMinus + 1) + itemChild.name;
+            itemChild.chief = "";
+            state.employeeData.splice(index + 1, 0, itemChild);
+            state.employeeData.splice(-1, 1);
+          }
+        });
       });
-    },
-    setChildrenRaw(state) {
-      state.employeeFormRaw.map((item) => {
-        checkChief(item);
-      });
-      function checkChief(checking) {
-        for (const propChild in checking) {
-          state.employeeFormRaw.map((item) => {
-            const elementChild = checking[propChild];
-            if (typeof elementChild === "object" && elementChild.size > 0) {
-              for (const elem of elementChild) {
-                checkChief(elem);
-              }
-            } else if (propChild === "chief" && elementChild !== "") {
-              if (item.name === elementChild) {
-                item.children.add(checking);
-              }
-            }
-          });
-        }
-      }
-    },
-    setEmployeesData(state) {
-      state.employeesFormData.length = 0;
-      state.employeeFormRaw.map((itemArr) => {
-        if (itemArr.chief === "" || itemArr.chief == undefined) {
-          state.employeesFormData.push(itemArr);
-        }
+      state.maybeChief.length = 0;
+      state.employeeData.map((item) => {
+        state.maybeChief.push(item.name);
       });
     },
     setStatistic(state) {
       let checkAges = [];
       let checkNames = [];
       let checkGender = [0, 0, 0];
-      state.employeesFormData.map((item) => {
+      state.employeeData.map((item) => {
         checkingStats(item);
       });
       function checkingStats(obj) {
         for (const key in obj) {
           const element = obj[key];
-          if (typeof element === "object" && element.size > 0) {
-            for (const elem of element) {
-              checkingStats(elem);
-            }
-          }
           if (key === "age") {
             checkAges.push(element);
           }
@@ -187,33 +153,13 @@ export default new Vuex.Store({
         return (item = Math.floor((item / genderValue) * 100));
       });
     },
-    // делит
-    setEmployeeTableData(state) {
-      state.employeesFormData.map((item) => {
-        checkEmployeeFormData(item);
-      });
-      function checkEmployeeFormData(obj) {
-        for (const key in obj) {
-          const element = obj[key];
-          if (typeof element === "object" && element.size > 0) {
-            for (const elem of element) {
-              checkEmployeeFormData(elem);
-            }
-          }
-          state.employeeTableData.add(obj);
-        }
-      }
-    },
   },
   actions: {
     setAllData(state) {
       state.commit("setEmployeeFormRaw");
-      state.commit("setChildrenRaw");
-      state.commit("setEmployeesData");
+      state.commit("formatEmployeeFormRaw");
       state.commit("setStatistic");
       state.commit("setPercentGender");
-      state.commit("formatEmployeeFormRaw");
-      state.commit("setEmployeeTableData");
       state.commit("disableButtonForm");
     },
   },

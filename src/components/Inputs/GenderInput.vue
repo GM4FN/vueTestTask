@@ -30,7 +30,7 @@ export default {
   computed: {
     gender: {
       get() {
-        return this.$store.state.employeeFormRaw.gender;
+        return this.$store.state.employeeData.gender;
       },
       set(value) {
         this.$store.commit("addEmployee", { name: "gender", value });

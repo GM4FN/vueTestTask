@@ -23,7 +23,7 @@ export default {
   computed: {
     age: {
       get() {
-        return this.$store.state.employeeFormRaw.age;
+        return this.$store.state.employeeData.age;
       },
       set(value) {
         this.$store.commit("addEmployee", { name: "age", value });

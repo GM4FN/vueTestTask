@@ -51,7 +51,6 @@ export default {
     return {
       chartData: {
         labels: this.$store.state.namesEmployees,
-        // this.$store.state.agesWorkers
         datasets: [
           {
             label: "Возраст",
