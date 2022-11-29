@@ -108,10 +108,10 @@ export default new Vuex.Store({
     sortAgeByIncrease(state) {
       let sortData = state.employeesData.map((item) => item);
       sortData.sort(function (a, b) {
-        if (a.age > b.age) {
+        if (+a.age > +b.age) {
           return -1;
         }
-        if (a.age < b.age) {
+        if (+a.age < +b.age) {
           return 1;
         }
         return 0;
@@ -121,16 +121,42 @@ export default new Vuex.Store({
     sortAgeByDecrease(state) {
       let sortData = state.employeesData.map((item) => item);
       sortData.sort(function (a, b) {
-        if (a.age > b.age) {
+        if (+a.age > +b.age) {
           return 1;
         }
-        if (a.age < b.age) {
+        if (+a.age < +b.age) {
           return -1;
         }
         return 0;
       });
       return sortData;
     },
+    sortPhoneByIncrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (+a.phone > +b.phone) {
+          return -1;
+        }
+        if (+a.phone < +b.phone) {
+          return 1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortPhoneByDecrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (+a.phone > +b.phone) {
+          return 1;
+        }
+        if (+a.phone < +b.phone) {
+          return -1;
+        }
+        return 0;
+      });
+      return sortData;
+    }
   },
   mutations: {
     hideForm(state) {

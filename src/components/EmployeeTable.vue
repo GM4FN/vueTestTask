@@ -8,48 +8,52 @@
       label-sort-desc=""
       label-sort-clear="">
       <template #thead-top>
-        <b-tr>
-          <b-td>
-            <button
-              class="btn btn-light"
-              type="button"
-              @click="sortByName"
-              value="nameIncrease">
-              По имени
-            </button>
-          </b-td>
-          <b-td>
-            <button
-              class="btn btn-light"
-              type="button"
-              @click="sortByGender"
-              value="genderIncrease">
-              По полу
-            </button>
-          </b-td>
-          <b-td>
-            <button
-              class="btn btn-light"
-              type="button"
-              @click="sortByAge"
-              value="ageIncrease">
-              По возрасту
-            </button>
-          </b-td>
-          <b-td>
-            <button
-              class="btn btn-light"
-              type="button"
-              @click="sortByDefault"
-              value="sortDefault">
-              По умолчанию
-            </button>
-          </b-td>
-        </b-tr>
+        <button
+          class="btn btn-light"
+          type="button"
+          @click="sortByDefault"
+          value="toDefault">
+          По умолчанию
+        </button>
       </template>
-      <template #cell(name)="items">
-        {{ items.item.levelChild }}{{ items.item.name }}
+      <template #head(name)="fields">
+        <button
+          class="btn btn-light"
+          type="button"
+          @click="sortByName"
+          value="nameIncrease">
+          {{ fields.label }}
+        </button>
       </template>
+      <template #head(gender)="fields">
+        <button
+          class="btn btn-light"
+          type="button"
+          @click="sortByGender"
+          value="genderIncrease">
+          {{ fields.label }}
+        </button>
+      </template>
+      <template #head(age)="fields">
+        <button
+          class="btn btn-light"
+          type="button"
+          @click="sortByAge"
+          value="ageIncrease">
+          {{ fields.label }}
+        </button>
+      </template>
+      <template #head(phone)="fields">
+        <button
+          class="btn btn-light"
+          type="button"
+          @click="sortByPhone"
+          value="phoneIncrease">
+          {{ fields.label }}
+        </button>
+      </template>
+
+      <template #cell(name)="items"> {{ items.item.levelChild }}{{ items.item.name }} </template>
       <template #cell(gender)="items">
         {{ items.item.gender }}
       </template>
@@ -94,6 +98,10 @@ export default {
             return this.sort;
           case this.$store.getters.sortAgeByDecrease:
             return this.sort;
+          case this.$store.getters.sortPhoneByIncrease:
+            return this.sort;
+          case this.$store.getters.sortPhoneByDecrease:
+            return this.sort;
         }
         return this.$store.state.employeesData;
       },
@@ -131,6 +139,16 @@ export default {
       } else if (buttonValue === "ageDecrease") {
         this.items = this.$store.getters.sortAgeByDecrease;
         event.target.value = "ageIncrease";
+      }
+    },
+    sortByPhone(event) {
+      const buttonValue = event.target.value;
+      if (buttonValue === "phoneIncrease") {
+        this.items = this.$store.getters.sortPhoneByIncrease;
+        event.target.value = "phoneDecrease";
+      } else if (buttonValue === "phoneDecrease") {
+        this.items = this.$store.getters.sortPhoneByDecrease;
+        event.target.value = "phoneIncrease";
       }
     },
     sortByDefault(event) {
