@@ -1,8 +1,12 @@
 <template>
   <div class="input-group mb-3">
+    <span
+      class="input-group-text d-inline-block"
+      id="basic-addon1">
+      Руководитель
+    </span>
     <select
       class="form-select"
-      aria-label="Default select example"
       v-model="chief">
       <option
         disabled
@@ -27,10 +31,10 @@ export default {
   computed: {
     chief: {
       get() {
-        return this.$store.state.employeeData.chief;
+        return this.$store.state.employeesData.chief;
       },
       set(value) {
-        this.$store.commit("addEmployee", { name: "chief", value });
+        this.$store.commit("bindFormInputs", { name: "chief", value });
       },
     },
   },

@@ -10,7 +10,6 @@
 
 <script>
 import { Bar } from "vue-chartjs/legacy";
-
 import {
   Chart as ChartJS,
   Title,
@@ -45,7 +44,6 @@ export default {
       type: Number,
       default: 400,
     },
-
   },
   data() {
     return {
@@ -65,13 +63,11 @@ export default {
       },
     };
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
 <style lang="sass" scoped>
-  *
-    width: 50%
+*
+  width: 50%
 </style>

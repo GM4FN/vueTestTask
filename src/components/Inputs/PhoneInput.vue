@@ -9,10 +9,7 @@
       type="text"
       class="form-control"
       placeholder="Номер телефона"
-      aria-label="Username"
-      aria-describedby="basic-addon1"
       v-model="phone"
-      required
       @keyup="validateInput" />
   </div>
 </template>
@@ -26,10 +23,10 @@ export default {
   computed: {
     phone: {
       get() {
-        return this.$store.state.employeeData.phone;
+        return this.$store.state.employeesData.phone;
       },
       set(value) {
-        this.$store.commit("addEmployee", { name: "phone", value });
+        this.$store.commit("bindFormInputs", { name: "phone", value });
       },
     },
     checkAlerts: {
@@ -37,24 +34,24 @@ export default {
         return this.$store.getters.checkAlerts;
       },
     },
-    checkEmployeeInput: {
+    checkInputsForm: {
       get() {
-        return this.$store.getters.checkEmployeeInput;
+        return this.$store.getters.checkInputsForm;
       },
     },
   },
   methods: {
     validateInput() {
       if (
-        this.$store.state.employeeInput.phone.match(/[А-яA-z]/g) ||
-        this.$store.state.employeeInput.phone.match(/\s/g) ||
-        this.$store.state.employeeInput.phone === ""
+        this.$store.state.formInputs.phone.match(/[А-яA-z]/g) ||
+        this.$store.state.formInputs.phone.match(/\s/g) ||
+        this.$store.state.formInputs.phone === ""
       ) {
         this.$store.commit("enableAlertInput", "phoneAlert");
         this.$store.commit("disableButtonForm");
       } else {
         this.$store.commit("disableAlertInput", "phoneAlert");
-        if (this.checkAlerts || this.checkEmployeeInput) {
+        if (this.checkAlerts || this.checkInputsForm) {
           this.$store.commit("disableButtonForm");
         } else {
           this.$store.commit("enableButtonForm");

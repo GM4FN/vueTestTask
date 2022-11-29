@@ -23,10 +23,10 @@ export default {
   computed: {
     age: {
       get() {
-        return this.$store.state.employeeData.age;
+        return this.$store.state.employeesData.age;
       },
       set(value) {
-        this.$store.commit("addEmployee", { name: "age", value });
+        this.$store.commit("bindFormInputs", { name: "age", value });
       },
     },
     checkAlerts: {
@@ -34,25 +34,25 @@ export default {
         return this.$store.getters.checkAlerts;
       },
     },
-    checkEmployeeInput: {
+    checkInputsForm: {
       get() {
-        return this.$store.getters.checkEmployeeInput;
+        return this.$store.getters.checkInputsForm;
       },
     },
   },
   methods: {
     validateInput() {
       if (
-        !Number.isInteger(+this.$store.state.employeeInput.age) ||
-        this.$store.state.employeeInput.age.match(/[А-яA-z]/g) ||
-        +this.$store.state.employeeInput.age < 18 ||
-        +this.$store.state.employeeInput.age > 120
+        !Number.isInteger(+this.$store.state.formInputs.age) ||
+        this.$store.state.formInputs.age.match(/[А-яA-z]/g) ||
+        +this.$store.state.formInputs.age < 18 ||
+        +this.$store.state.formInputs.age > 120
       ) {
         this.$store.commit("enableAlertInput", "ageAlert");
         this.$store.commit("disableButtonForm");
       } else {
         this.$store.commit("disableAlertInput", "ageAlert");
-        if (this.checkAlerts || this.checkEmployeeInput) {
+        if (this.checkAlerts || this.checkInputsForm) {
           this.$store.commit("disableButtonForm");
         } else {
           this.$store.commit("enableButtonForm");

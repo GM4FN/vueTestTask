@@ -12,8 +12,6 @@ export default {
   data() {
     return {};
   },
-  computed: "",
-  methods: "",
   name: "button-default-aside",
   props: {
     namePath: String,

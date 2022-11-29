@@ -8,15 +8,18 @@
         Добавить
       </button>
     </div>
-    <employee-table></employee-table>
-    <employee-form v-show="this.$store.state.formIsDisplay"></employee-form>
+    <employee-table />
+    <employee-form v-if="this.$store.state.formIsDisplay" />
   </section>
 </template>
+
 <script>
+import employeeTable from "../EmployeeTable.vue";
+
 export default {
   components: {
     employeeForm: () => import("../EmployeeForm.vue"),
-    employeeTable: () => import("../EmployeeTable.vue"),
+    employeeTable,
   },
   data() {
     return {};

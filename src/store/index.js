@@ -17,14 +17,15 @@ export default new Vuex.Store({
       ageAlert: false,
       phoneAlert: false,
     },
-    employeeInput: {
+    formInputs: {
       name: "",
       gender: "",
       age: "",
       phone: "",
       chief: "",
+      levelChild: "",
     },
-    employeeData: [],
+    employeesData: [],
     maybeChief: [],
     agesEmployees: [],
     namesEmployees: [],
@@ -42,15 +43,93 @@ export default new Vuex.Store({
         }
       }
     },
-    checkEmployeeInput(state) {
-      for (const key in state.employeeInput) {
-        if (Object.hasOwnProperty.call(state.employeeInput, key)) {
-          const element = state.employeeInput[key];
-          if (element === "" && key !== "chief") {
+    checkInputsForm(state) {
+      for (const key in state.formInputs) {
+        if (Object.hasOwnProperty.call(state.formInputs, key)) {
+          const element = state.formInputs[key];
+          if (element === "" && key !== "chief" && key !== "levelChild") {
             return true;
           }
         }
       }
+    },
+    sortNameByIncrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.name > b.name) {
+          return -1;
+        }
+        if (a.name < b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortNameByDecrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortGenderByIncrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.gender > b.gender) {
+          return -1;
+        }
+        if (a.gender < b.gender) {
+          return 1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortGenderByDecrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.gender > b.gender) {
+          return 1;
+        }
+        if (a.gender < b.gender) {
+          return -1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortAgeByIncrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.age > b.age) {
+          return -1;
+        }
+        if (a.age < b.age) {
+          return 1;
+        }
+        return 0;
+      });
+      return sortData;
+    },
+    sortAgeByDecrease(state) {
+      let sortData = state.employeesData.map((item) => item);
+      sortData.sort(function (a, b) {
+        if (a.age > b.age) {
+          return 1;
+        }
+        if (a.age < b.age) {
+          return -1;
+        }
+        return 0;
+      });
+      return sortData;
     },
   },
   mutations: {
@@ -60,9 +139,9 @@ export default new Vuex.Store({
     showForm(state) {
       state.formIsDisplay = true;
     },
-    addEmployee(state, obj) {
+    bindFormInputs(state, obj) {
       let { name, value } = obj;
-      state.employeeInput[name] = value;
+      state.formInputs[name] = value;
     },
     enableButtonForm(state) {
       state.buttonFormIsDisabled = false;
@@ -76,37 +155,40 @@ export default new Vuex.Store({
     disableAlertInput(state, typeAlert) {
       state.alerts[typeAlert] = false;
     },
-    setEmployeeFormRaw(state) {
+    setEmployeesData(state) {
       let cloneFormRaw = {};
-      for (const key in state.employeeInput) {
-        if (Object.hasOwnProperty.call(state.employeeInput, key)) {
-          cloneFormRaw[key] = state.employeeInput[key];
+      for (const key in state.formInputs) {
+        if (Object.hasOwnProperty.call(state.formInputs, key)) {
+          cloneFormRaw[key] = state.formInputs[key];
         }
       }
-      state.employeeData.push(cloneFormRaw);
+      state.employeesData.push(cloneFormRaw);
       state.maybeChief.push(cloneFormRaw.name);
-      state.employeeInput = {
+      state.formInputs = {
         name: "",
         gender: "",
         age: "",
         phone: "",
         chief: "",
+        levelChild: "",
       };
     },
-    formatEmployeeFormRaw(state) {
-      state.employeeData.map((item, index) => {
-        state.employeeData.map((itemChild) => {
+    addLevelChild(state) {
+      state.employeesData.map((item, index) => {
+        state.employeesData.map((itemChild) => {
           if (item.name === itemChild.chief) {
-            let indexOfMinus = item.name.lastIndexOf("-");
-            itemChild.name = "-" + item.name.slice(0, indexOfMinus + 1) + itemChild.name;
+            itemChild.levelChild += "-";
+            if (item.levelChild !== "") {
+              itemChild.levelChild = item.levelChild + "-";
+            }
             itemChild.chief = "";
-            state.employeeData.splice(index + 1, 0, itemChild);
-            state.employeeData.splice(-1, 1);
+            state.employeesData.splice(index + 1, 0, itemChild);
+            state.employeesData.splice(-1, 1);
           }
         });
       });
       state.maybeChief.length = 0;
-      state.employeeData.map((item) => {
+      state.employeesData.map((item) => {
         state.maybeChief.push(item.name);
       });
     },
@@ -114,7 +196,7 @@ export default new Vuex.Store({
       let checkAges = [];
       let checkNames = [];
       let checkGender = [0, 0, 0];
-      state.employeeData.map((item) => {
+      state.employeesData.map((item) => {
         checkingStats(item);
       });
       function checkingStats(obj) {
@@ -154,8 +236,8 @@ export default new Vuex.Store({
   },
   actions: {
     setAllData(state) {
-      state.commit("setEmployeeFormRaw");
-      state.commit("formatEmployeeFormRaw");
+      state.commit("setEmployeesData");
+      state.commit("addLevelChild");
       state.commit("setStatistic");
       state.commit("setPercentGender");
       state.commit("disableButtonForm");

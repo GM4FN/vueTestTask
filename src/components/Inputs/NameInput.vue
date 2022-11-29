@@ -6,7 +6,6 @@
       Имя
     </span>
     <input
-      name="name"
       type="text"
       class="form-control"
       placeholder="Как зовут"
@@ -24,10 +23,10 @@ export default {
   computed: {
     name: {
       get() {
-        return this.$store.state.employeeData.name;
+        return this.$store.state.employeesData.name;
       },
       set(value) {
-        this.$store.commit("addEmployee", { name: "name", value });
+        this.$store.commit("bindFormInputs", { name: "name", value });
       },
     },
     checkAlerts: {
@@ -35,23 +34,23 @@ export default {
         return this.$store.getters.checkAlerts;
       },
     },
-    checkEmployeeInput: {
+    checkInputsForm: {
       get() {
-        return this.$store.getters.checkEmployeeInput;
+        return this.$store.getters.checkInputsForm;
       },
     },
   },
   methods: {
     validateInput() {
       if (
-        !this.$store.state.employeeInput.name.match(/[А-яA-z]/g) ||
-        this.$store.state.employeeInput.name.match(/[0-9]/g)
+        !this.$store.state.formInputs.name.match(/[А-яA-z]/g) ||
+        this.$store.state.formInputs.name.match(/[0-9]/g)
       ) {
         this.$store.commit("enableAlertInput", "nameAlert");
         this.$store.commit("disableButtonForm");
       } else {
         this.$store.commit("disableAlertInput", "nameAlert");
-        if (this.checkAlerts || this.checkEmployeeInput) {
+        if (this.checkAlerts || this.checkInputsForm) {
           this.$store.commit("disableButtonForm");
         } else {
           this.$store.commit("enableButtonForm");

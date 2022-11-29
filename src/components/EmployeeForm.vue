@@ -9,15 +9,15 @@
         class="btn-close align-self-end justify-center mb-1"
         @click="hideForm"></button>
       <div class="align-self-center mb-2">Добавить сотрудника</div>
-      <name-input></name-input>
+      <name-input />
       <alert-message v-show="alertName"> Имя должно содержать только буквы </alert-message>
-      <gender-input></gender-input>
+      <gender-input />
       <alert-message v-show="alertGender"> Введите пол </alert-message>
-      <age-input></age-input>
+      <age-input />
       <alert-message v-show="alertAge"> Вы должны быть старше 18, но младше 120... </alert-message>
-      <phone-input></phone-input>
+      <phone-input />
       <alert-message v-show="alertPhone"> Введите телефон цифрами </alert-message>
-      <chief-input></chief-input>
+      <chief-input />
       <button
         class="btn btn-primary align-self-center"
         :disabled="buttonIsDisabled"
@@ -27,16 +27,24 @@
     </form>
   </section>
 </template>
+
 <script>
+import nameInput from "./Inputs/NameInput.vue";
+import genderInput from "./Inputs/GenderInput.vue";
+import ageInput from "./Inputs/AgeInput.vue";
+import phoneInput from "./Inputs/PhoneInput.vue";
+import chiefInput from "./Inputs/ChiefInput.vue";
+import alertMessage from "./AlertMessage.vue";
+
 export default {
   name: "employee-form",
   components: {
-    nameInput: () => import("./Inputs/NameInput.vue"),
-    genderInput: () => import("./Inputs/GenderInput.vue"),
-    ageInput: () => import("./Inputs/AgeInput.vue"),
-    phoneInput: () => import("./Inputs/PhoneInput.vue"),
-    chiefInput: () => import("./Inputs/ChiefInput.vue"),
-    alertMessage: () => import("./AlertMessage.vue"),
+    nameInput,
+    genderInput,
+    ageInput,
+    phoneInput,
+    chiefInput,
+    alertMessage,
   },
   data() {
     return {};

@@ -24,6 +24,7 @@ export default {
   },
 };
 </script>
+
 <style lang="sass" scoped>
 aside
   width: 25%

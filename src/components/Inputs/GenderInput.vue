@@ -30,10 +30,10 @@ export default {
   computed: {
     gender: {
       get() {
-        return this.$store.state.employeeData.gender;
+        return this.$store.state.employeesData.gender;
       },
       set(value) {
-        this.$store.commit("addEmployee", { name: "gender", value });
+        this.$store.commit("bindFormInputs", { name: "gender", value });
       },
     },
     checkAlerts: {
@@ -41,20 +41,20 @@ export default {
         return this.$store.getters.checkAlerts;
       },
     },
-    checkEmployeeInput: {
+    checkInputsForm: {
       get() {
-        return this.$store.getters.checkEmployeeInput;
+        return this.$store.getters.checkInputsForm;
       },
     },
   },
   methods: {
     validateInput() {
-      if (this.$store.state.employeeInput.gender === "") {
+      if (this.$store.state.formInputs.gender === "") {
         this.$store.commit("enableAlertInput", "genderAlert");
         this.$store.commit("disableButtonForm");
       } else {
         this.$store.commit("disableAlertInput", "genderAlert");
-        if (this.checkAlerts || this.checkEmployeeInput) {
+        if (this.checkAlerts || this.checkInputsForm) {
           this.$store.commit("disableButtonForm");
         } else {
           this.$store.commit("enableButtonForm");
