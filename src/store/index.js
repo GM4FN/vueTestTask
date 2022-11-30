@@ -25,12 +25,12 @@ export default new Vuex.Store({
       chief: "",
       levelChild: "",
     },
-    employeesData: [],
-    maybeChief: [],
-    agesEmployees: [],
-    namesEmployees: [],
-    genderCount: [],
-    genderPercent: [],
+    employeesData: JSON.parse(localStorage.getItem("employeesData")) || [],
+    maybeChief: JSON.parse(localStorage.getItem("maybeChief")) || [],
+    agesEmployees: JSON.parse(localStorage.getItem("agesEmployees")) || [],
+    namesEmployees: JSON.parse(localStorage.getItem("namesEmployees")) || [],
+    genderCount: JSON.parse(localStorage.getItem("genderCount")) || [],
+    genderPercent: JSON.parse(localStorage.getItem("genderPercent")) || [],
   },
   getters: {
     checkAlerts(state) {
@@ -56,10 +56,12 @@ export default new Vuex.Store({
     sortNameByIncrease(state) {
       let sortData = state.employeesData.map((item) => item);
       sortData.sort(function (a, b) {
-        if (a.name > b.name) {
+        let nameA = a.name.toLowerCase(),
+          nameB = b.name.toLowerCase();
+        if (nameA > nameB) {
           return -1;
         }
-        if (a.name < b.name) {
+        if (nameA < nameB) {
           return 1;
         }
         return 0;
@@ -69,10 +71,12 @@ export default new Vuex.Store({
     sortNameByDecrease(state) {
       let sortData = state.employeesData.map((item) => item);
       sortData.sort(function (a, b) {
-        if (a.name > b.name) {
+        let nameA = a.name.toLowerCase(),
+          nameB = b.name.toLowerCase();
+        if (nameA > nameB) {
           return 1;
         }
-        if (a.name < b.name) {
+        if (nameA < nameB) {
           return -1;
         }
         return 0;
@@ -156,7 +160,7 @@ export default new Vuex.Store({
         return 0;
       });
       return sortData;
-    }
+    },
   },
   mutations: {
     hideForm(state) {
@@ -259,6 +263,23 @@ export default new Vuex.Store({
         return (item = Math.floor((item / genderValue) * 100));
       });
     },
+    setLocalStorageData(state) {
+      localStorage.setItem("employeesData", JSON.stringify(state.employeesData));
+      localStorage.setItem("maybeChief", JSON.stringify(state.maybeChief));
+      localStorage.setItem("agesEmployees", JSON.stringify(state.agesEmployees));
+      localStorage.setItem("namesEmployees", JSON.stringify(state.namesEmployees));
+      localStorage.setItem("genderCount", JSON.stringify(state.genderCount));
+      localStorage.setItem("genderPercent", JSON.stringify(state.genderPercent));
+    },
+    clearData(state) {
+      localStorage.clear();
+      state.employeesData = [];
+      state.maybeChief = [];
+      state.agesEmployees = [];
+      state.namesEmployees = [];
+      state.genderCount = [];
+      state.genderPercent = [];
+    },
   },
   actions: {
     setAllData(state) {
@@ -266,6 +287,7 @@ export default new Vuex.Store({
       state.commit("addLevelChild");
       state.commit("setStatistic");
       state.commit("setPercentGender");
+      state.commit("setLocalStorageData");
       state.commit("disableButtonForm");
     },
   },

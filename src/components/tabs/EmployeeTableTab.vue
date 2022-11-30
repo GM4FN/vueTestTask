@@ -2,6 +2,13 @@
   <section class="worker-tab d-flex flex-column gap-5">
     <div class="d-flex justify-content-around">
       <button
+        class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
+        type="button"
+        @click="clearData"
+        value="toDefault">
+        Очистить таблицу
+      </button>
+      <button
         type="button"
         class="btn btn-outline-secondary rounded-pill mt-5 align-self-center"
         @click="showForm">
@@ -27,6 +34,9 @@ export default {
   methods: {
     showForm() {
       this.$store.commit("showForm");
+    },
+    clearData() {
+      this.$store.commit("clearData");
     },
   },
   computed: {},
