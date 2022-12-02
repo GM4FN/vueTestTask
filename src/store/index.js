@@ -24,6 +24,7 @@ export default new Vuex.Store({
       phone: "",
       chief: "",
       levelChild: "",
+      chiefForSort: "",
     },
     employeesData: JSON.parse(localStorage.getItem("employeesData")) || [],
     maybeChief: JSON.parse(localStorage.getItem("maybeChief")) || [],
@@ -47,40 +48,98 @@ export default new Vuex.Store({
       for (const key in state.formInputs) {
         if (Object.hasOwnProperty.call(state.formInputs, key)) {
           const element = state.formInputs[key];
-          if (element === "" && key !== "chief" && key !== "levelChild") {
+          if (element === "" && key !== "chief" && key !== "levelChild" && key !== "chiefForSort") {
             return true;
           }
         }
       }
     },
+    // БРАТЬ ПО LEVELCHILD СОРТИРОВАТЬ И ВСТАВЛЯТЬ В МАССИВ
+    // Сначала просто подряд сделать чтобы шли элементы
+    // потом по родителям их раскидать через chiefForSort
     sortNameByIncrease(state) {
-      let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        let nameA = a.name.toLowerCase(),
-          nameB = b.name.toLowerCase();
-        if (nameA > nameB) {
-          return -1;
-        }
-        if (nameA < nameB) {
-          return 1;
-        }
-        return 0;
+      let sortDataRaw = [],
+        sortData = [],
+        maxLevelChild = 0,
+        counterLevelChild = "",
+        count = 0;
+      state.employeesData.map((item) => {
+        maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
       });
+      sortAllLevels();
+      
+      setSortData();
+      function sortAllLevels() {
+        let sorting = state.employeesData.map((item) => {
+          if (item.levelChild === counterLevelChild) {
+            return item;
+          }
+        });
+        sorting = sorting.filter((item) => item != undefined);
+        sorting.sort(function (a, b) {
+          let nameA = a.name.toLowerCase(),
+            nameB = b.name.toLowerCase();
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        });
+        sortDataRaw.push(sorting);
+        counterLevelChild += "-";
+        if (counterLevelChild.length === maxLevelChild + 1) {
+          sortDataRaw[0].map((item) => sortData.push(item));
+          return;
+        }
+        sortAllLevels();
+      }
+      
+      function setSortData() {
+        sortData.map((itemParent, indexParent) => {
+          sortDataRaw.map((item, index) => {
+            item.map((itemChild, indexChild) => {
+              if (itemParent.name === itemChild.chiefForSort) {
+                itemChild.chiefForSort = "";
+                sortData.splice(indexParent + 1, 0, itemChild);
+                item.splice(indexChild, 1);
+              }
+            });
+            item.splice(index, 1)
+          });
+        });
+        count++;
+        if (count === maxLevelChild + 1) {
+          return;
+        }
+        setSortData();
+      }
+
+      // sortData.map((item, index) => {
+      //   sortData.map((itemChild, indexChild) => {
+      //     console.log(item.name, itemChild.name);
+      //     if (item.name === itemChild.chiefForSort) {
+
+      //       sortData.splice(indexChild, 1);
+      //     }
+      //   });
+      // });
       return sortData;
     },
     sortNameByDecrease(state) {
       let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        let nameA = a.name.toLowerCase(),
-          nameB = b.name.toLowerCase();
-        if (nameA > nameB) {
-          return 1;
-        }
-        if (nameA < nameB) {
-          return -1;
-        }
-        return 0;
-      });
+      // sortData.sort(function (a, b) {
+      //   let nameA = a.name.toLowerCase(),
+      //     nameB = b.name.toLowerCase();
+      //   if (a.levelChild === "" && b.levelChild === "" && (nameA > nameB)) {
+      //     return 1;
+      //   }
+      //   if (a.levelChild === "" && b.levelChild === "" &&( nameA < nameB)) {
+      //     return -1;
+      //   }
+      //   return 0;
+      // });
       return sortData;
     },
     sortGenderByIncrease(state) {
@@ -201,6 +260,7 @@ export default new Vuex.Store({
         phone: "",
         chief: "",
         levelChild: "",
+        chiefForSort: "",
       };
     },
     addLevelChild(state) {
@@ -211,6 +271,7 @@ export default new Vuex.Store({
             if (item.levelChild !== "") {
               itemChild.levelChild = item.levelChild + "-";
             }
+            itemChild.chiefForSort = itemChild.chief;
             itemChild.chief = "";
             state.employeesData.splice(index + 1, 0, itemChild);
             state.employeesData.splice(-1, 1);
