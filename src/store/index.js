@@ -54,21 +54,14 @@ export default new Vuex.Store({
         }
       }
     },
-    // БРАТЬ ПО LEVELCHILD СОРТИРОВАТЬ И ВСТАВЛЯТЬ В МАССИВ
-    // Сначала просто подряд сделать чтобы шли элементы
-    // потом по родителям их раскидать через chiefForSort
     sortNameByIncrease(state) {
-      let sortDataRaw = [],
-        sortData = [],
+      let sortedData = [],
         maxLevelChild = 0,
-        counterLevelChild = "",
-        count = 0;
+        counterLevelChild = "";
       state.employeesData.map((item) => {
         maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
       });
       sortAllLevels();
-      
-      setSortData();
       function sortAllLevels() {
         let sorting = state.employeesData.map((item) => {
           if (item.levelChild === counterLevelChild) {
@@ -87,60 +80,77 @@ export default new Vuex.Store({
           }
           return 0;
         });
-        sortDataRaw.push(sorting);
         counterLevelChild += "-";
+        sorting.map((item) => {
+          if (item.chiefForSort === "") {
+            sortedData.push(item);
+          }
+        });
+        sorting.reverse().map((itemChild) => {
+          if (itemChild.chiefForSort !== "") {
+            sortedData.map((itemParent, indexParent) => {
+              let count = 1;
+              if (itemParent.name === itemChild.chiefForSort) {
+                sortedData.splice(indexParent + count++, 0, itemChild);
+              }
+            });
+          }
+        });
         if (counterLevelChild.length === maxLevelChild + 1) {
-          sortDataRaw[0].map((item) => sortData.push(item));
           return;
         }
         sortAllLevels();
       }
-      
-      function setSortData() {
-        sortData.map((itemParent, indexParent) => {
-          sortDataRaw.map((item, index) => {
-            item.map((itemChild, indexChild) => {
-              if (itemParent.name === itemChild.chiefForSort) {
-                itemChild.chiefForSort = "";
-                sortData.splice(indexParent + 1, 0, itemChild);
-                item.splice(indexChild, 1);
-              }
-            });
-            item.splice(index, 1)
-          });
-        });
-        count++;
-        if (count === maxLevelChild + 1) {
-          return;
-        }
-        setSortData();
-      }
-
-      // sortData.map((item, index) => {
-      //   sortData.map((itemChild, indexChild) => {
-      //     console.log(item.name, itemChild.name);
-      //     if (item.name === itemChild.chiefForSort) {
-
-      //       sortData.splice(indexChild, 1);
-      //     }
-      //   });
-      // });
-      return sortData;
+      return sortedData;
     },
     sortNameByDecrease(state) {
-      let sortData = state.employeesData.map((item) => item);
-      // sortData.sort(function (a, b) {
-      //   let nameA = a.name.toLowerCase(),
-      //     nameB = b.name.toLowerCase();
-      //   if (a.levelChild === "" && b.levelChild === "" && (nameA > nameB)) {
-      //     return 1;
-      //   }
-      //   if (a.levelChild === "" && b.levelChild === "" &&( nameA < nameB)) {
-      //     return -1;
-      //   }
-      //   return 0;
-      // });
-      return sortData;
+      let sortedData = [],
+      maxLevelChild = 0,
+      counterLevelChild = "";
+    state.employeesData.map((item) => {
+      maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
+    });
+    sortAllLevels();
+    function sortAllLevels() {
+      let sorting = state.employeesData.map((item) => {
+        if (item.levelChild === counterLevelChild) {
+          return item;
+        }
+      });
+      sorting = sorting.filter((item) => item != undefined);
+      sorting.sort(function (a, b) {
+        let nameA = a.name.toLowerCase(),
+          nameB = b.name.toLowerCase();
+        if (nameA > nameB) {
+          return 1;
+        }
+        if (nameA < nameB) {
+          return -1;
+        }
+        return 0;
+      });
+      counterLevelChild += "-";
+      sorting.map((item) => {
+        if (item.chiefForSort === "") {
+          sortedData.push(item);
+        }
+      });
+      sorting.reverse().map((itemChild) => {
+        if (itemChild.chiefForSort !== "") {
+          sortedData.map((itemParent, indexParent) => {
+            let count = 1;
+            if (itemParent.name === itemChild.chiefForSort) {
+              sortedData.splice(indexParent + count++, 0, itemChild);
+            }
+          });
+        }
+      });
+      if (counterLevelChild.length === maxLevelChild + 1) {
+        return;
+      }
+      sortAllLevels();
+    }
+    return sortedData;
     },
     sortGenderByIncrease(state) {
       let sortData = state.employeesData.map((item) => item);
