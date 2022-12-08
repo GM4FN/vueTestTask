@@ -16,7 +16,7 @@
       <option
         :value="chief"
         v-for="chief in this.$store.state.maybeChief">
-        {{ chief }}
+        {{ chief.name }}
       </option>
     </select>
   </div>

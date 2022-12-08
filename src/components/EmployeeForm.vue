@@ -79,6 +79,7 @@ export default {
   methods: {
     hideForm() {
       this.$store.commit("hideForm");
+      this.$store.commit("disableButtonForm");
     },
     setData() {
       this.$store.dispatch("setAllData");
