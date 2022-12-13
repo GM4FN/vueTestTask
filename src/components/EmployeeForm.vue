@@ -82,7 +82,12 @@ export default {
       this.$store.commit("disableButtonForm");
     },
     setData() {
-      this.$store.dispatch("setAllData");
+      this.$store.commit("setEmployeesData");
+      this.$store.commit("addLevelChild");
+      this.$store.commit("setStatistic");
+      this.$store.commit("setPercentGender");
+      this.$store.commit("setLocalStorageData");
+      this.$store.commit("disableButtonForm");
     },
   },
 };

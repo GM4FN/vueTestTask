@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import sort from "./sort.js";
 
 Vue.use(Vuex);
 
@@ -65,17 +66,14 @@ export default new Vuex.Store({
       let sortedData = [],
         maxLevelChild = 0,
         counterLevelChild = "";
-      state.employeesData.map((item) => {
+      state.employeesData.forEach((item) => {
         maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
       });
       sortAllLevels();
       function sortAllLevels() {
-        let sorting = state.employeesData.map((item) => {
-          if (item.levelChild === counterLevelChild) {
-            return item;
-          }
-        });
-        sorting = sorting.filter((item) => item != undefined);
+        let sorting = state.employeesData.filter(
+          (employee) => employee.levelChild === counterLevelChild
+        );
         sorting.sort(function (a, b) {
           let nameA = a.name.toLowerCase(),
             nameB = b.name.toLowerCase();
@@ -88,14 +86,14 @@ export default new Vuex.Store({
           return 0;
         });
         counterLevelChild += "-";
-        sorting.map((item) => {
+        sorting.forEach((item) => {
           if (!Object.hasOwnProperty.call(item.chiefForSort, "name")) {
             sortedData.push(item);
           }
         });
-        sorting.reverse().map((itemChild) => {
+        sorting.reverse().forEach((itemChild) => {
           if (Object.hasOwnProperty.call(itemChild.chiefForSort, "name")) {
-            sortedData.map((itemParent, indexParent) => {
+            sortedData.forEach((itemParent, indexParent) => {
               let count = 1;
               if (itemParent.id === itemChild.chiefForSort.id) {
                 sortedData.splice(indexParent + count++, 0, itemChild);
@@ -114,17 +112,14 @@ export default new Vuex.Store({
       let sortedData = [],
         maxLevelChild = 0,
         counterLevelChild = "";
-      state.employeesData.map((item) => {
+      state.employeesData.forEach((item) => {
         maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
       });
       sortAllLevels();
       function sortAllLevels() {
-        let sorting = state.employeesData.map((item) => {
-          if (item.levelChild === counterLevelChild) {
-            return item;
-          }
-        });
-        sorting = sorting.filter((item) => item != undefined);
+        let sorting = state.employeesData.filter(
+          (employee) => employee.levelChild === counterLevelChild
+        );
         sorting.sort(function (a, b) {
           let nameA = a.name.toLowerCase(),
             nameB = b.name.toLowerCase();
@@ -137,14 +132,14 @@ export default new Vuex.Store({
           return 0;
         });
         counterLevelChild += "-";
-        sorting.map((item) => {
+        sorting.forEach((item) => {
           if (!Object.hasOwnProperty.call(item.chiefForSort, "name")) {
             sortedData.push(item);
           }
         });
-        sorting.reverse().map((itemChild) => {
+        sorting.reverse().forEach((itemChild) => {
           if (Object.hasOwnProperty.call(itemChild.chiefForSort, "name")) {
-            sortedData.map((itemParent, indexParent) => {
+            sortedData.forEach((itemParent, indexParent) => {
               let count = 1;
               if (itemParent.id === itemChild.chiefForSort.id) {
                 sortedData.splice(indexParent + count++, 0, itemChild);
@@ -160,82 +155,54 @@ export default new Vuex.Store({
       return sortedData;
     },
     sortGenderByIncrease(state) {
-      let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (a.gender > b.gender) {
-          return -1;
-        }
-        if (a.gender < b.gender) {
-          return 1;
-        }
-        return 0;
-      });
-      return sortData;
+      sort.sortGender(state, "Increase");
+      // let sortData = state.employeesData.map((item) => item);
+      // sortData.sort(function (a, b) {
+      //   if (a.gender > b.gender) {
+      //     return -1;
+      //   }
+      //   if (a.gender < b.gender) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // });
+      // return sortData;
     },
     sortGenderByDecrease(state) {
-      let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (a.gender > b.gender) {
-          return 1;
-        }
-        if (a.gender < b.gender) {
-          return -1;
-        }
-        return 0;
-      });
-      return sortData;
+      sort.sortGender(state, "Decrease");
+      // let sortData = state.employeesData.map((item) => item);
+      // sortData.sort(function (a, b) {
+      //   if (a.gender > b.gender) {
+      //     return 1;
+      //   }
+      //   if (a.gender < b.gender) {
+      //     return -1;
+      //   }
+      //   return 0;
+      // });
+      // return sortData;
     },
     sortAgeByIncrease(state) {
       let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (+a.age > +b.age) {
-          return -1;
-        }
-        if (+a.age < +b.age) {
-          return 1;
-        }
-        return 0;
-      });
+      sortData.sort((a, b) => +a.age - +b.age);
       return sortData;
     },
     sortAgeByDecrease(state) {
       let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (+a.age > +b.age) {
-          return 1;
-        }
-        if (+a.age < +b.age) {
-          return -1;
-        }
-        return 0;
-      });
+      sortData.sort((a, b) => +b.age - +a.age);
       return sortData;
     },
     sortPhoneByIncrease(state) {
       let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (+a.phone > +b.phone) {
-          return -1;
-        }
-        if (+a.phone < +b.phone) {
-          return 1;
-        }
-        return 0;
-      });
+      sortData.sort((a, b) => +a.phone - +b.phone);
       return sortData;
     },
     sortPhoneByDecrease(state) {
       let sortData = state.employeesData.map((item) => item);
-      sortData.sort(function (a, b) {
-        if (+a.phone > +b.phone) {
-          return 1;
-        }
-        if (+a.phone < +b.phone) {
-          return -1;
-        }
-        return 0;
-      });
+      sortData.sort((a, b) => +b.phone - +a.phone);
       return sortData;
+      sort.sortPhone(state, a.phone, b.phone)
+      // sortPhone(state, b.phone, a.phone)
     },
   },
   mutations: {
@@ -282,8 +249,8 @@ export default new Vuex.Store({
       };
     },
     addLevelChild(state) {
-      state.employeesData.map((item, index) => {
-        state.employeesData.map((itemChild) => {
+      state.employeesData.forEach((item, index) => {
+        state.employeesData.forEach((itemChild) => {
           if (item.id === itemChild.chief.id) {
             itemChild.levelChild += "-";
             if (item.levelChild !== "") {
@@ -297,7 +264,7 @@ export default new Vuex.Store({
         });
       });
       state.maybeChief.length = 0;
-      state.employeesData.map((item) => {
+      state.employeesData.forEach((item) => {
         state.maybeChief.push(item);
       });
     },
@@ -305,7 +272,7 @@ export default new Vuex.Store({
       let checkAges = [];
       let checkNames = [];
       let checkGender = [0, 0, 0];
-      state.employeesData.map((item) => {
+      state.employeesData.forEach((item) => {
         checkingStats(item);
       });
       function checkingStats(obj) {
@@ -329,13 +296,13 @@ export default new Vuex.Store({
       state.namesEmployees.length = 0;
       state.agesEmployees.length = 0;
       state.genderCount.length = 0;
-      checkGender.map((item) => state.genderCount.push(item));
-      checkAges.map((item) => state.agesEmployees.push(item));
-      checkNames.map((item) => state.namesEmployees.push(item));
+      checkGender.forEach((item) => state.genderCount.push(item));
+      checkAges.forEach((item) => state.agesEmployees.push(item));
+      checkNames.forEach((item) => state.namesEmployees.push(item));
     },
     setPercentGender(state) {
       let genderValue = 0;
-      state.genderCount.map((item) => {
+      state.genderCount.forEach((item) => {
         genderValue += item;
       });
       state.genderPercent = state.genderCount.map((item) => {
@@ -362,15 +329,6 @@ export default new Vuex.Store({
       state.formInputs.id = 0;
     },
   },
-  actions: {
-    setAllData(state) {
-      state.commit("setEmployeesData");
-      state.commit("addLevelChild");
-      state.commit("setStatistic");
-      state.commit("setPercentGender");
-      state.commit("setLocalStorageData");
-      state.commit("disableButtonForm");
-    },
-  },
+  actions: {},
   modules: {},
 });
