@@ -25,7 +25,7 @@ export default {
         });
         break;
     }
-    console.log(sortData);
+    // console.log(sortData);
     return sortData;
   },
   sortPhone(state, firseEl, secondEl) {

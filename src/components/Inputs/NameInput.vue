@@ -1,68 +1,57 @@
 <template>
-  <div class="input-group mb-3">
-    <span
-      class="input-group-text d-inline-block"
-      id="basic-addon1">
-      Имя
-    </span>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Как зовут"
-      v-model="name"
-      @keyup="validateInput" />
+  <div>
+    <div class="input-group mb-2">
+      <span
+        class="input-group-text d-block"
+        id="basic-addon1">
+        Имя
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Как зовут"
+        v-model="name"
+        @keyup="validateInput" />
+    </div>
+    <alert-message v-show="alertName"> Имя должно содержать только буквы </alert-message>
   </div>
 </template>
 
 <script>
+import alertMessage from "../AlertMessage.vue";
+
 export default {
   name: "name-input",
+  components: {
+    alertMessage,
+  },
   data() {
-    return {};
+    return {
+      alertName: false,
+      name: "",
+    };
   },
-  computed: {
-    name: {
-      get() {
-        return this.$store.state.employeesData.name;
-      },
-      set(value) {
-        this.$store.commit("bindFormInputs", { name: "name", value });
-      },
-    },
-    checkAlerts: {
-      get() {
-        return this.$store.getters.checkAlerts;
-      },
-    },
-    checkInputsForm: {
-      get() {
-        return this.$store.getters.checkInputsForm;
-      },
-    },
-  },
+  computed: {},
   methods: {
     validateInput() {
-      if (
-        !this.$store.state.formInputs.name.match(/[А-яA-z]/g) ||
-        this.$store.state.formInputs.name.match(/[0-9]/g)
-      ) {
-        this.$store.commit("enableAlertInput", "nameAlert");
-        this.$store.commit("disableButtonForm");
+      if (!this.name.match(/[А-яA-z]/g) || this.name.match(/[0-9]/g)) {
+        this.alertName = true;
       } else {
-        this.$store.commit("disableAlertInput", "nameAlert");
-        if (this.checkAlerts || this.checkInputsForm) {
-          this.$store.commit("disableButtonForm");
-        } else {
-          this.$store.commit("enableButtonForm");
-        }
+        this.alertName = false;
       }
+      let nameInputData = {
+        alert: this.alertName,
+        alertType: "alertName",
+        input: this.name,
+        inputType: "name",
+      };
+      this.$emit("set-name", nameInputData);
     },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.input-group
 span
   width: 25%
 </style>

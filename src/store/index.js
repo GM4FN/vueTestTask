@@ -1,67 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import sort from "./sort.js";
+import sort from "../services/sort.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    buttonsAsideData: [
-      { id: 2, slot: "К сотрудникам", namePath: "workerTableTab" },
-      { id: 3, slot: "К статистике", namePath: "statisticTab" },
-    ],
-    formIsDisplay: false,
-    buttonFormIsDisabled: true,
-    alerts: {
-      nameAlert: false,
-      genderAlert: false,
-      ageAlert: false,
-      phoneAlert: false,
-    },
-    formInputs: {
-      name: "",
-      gender: "",
-      age: "",
-      phone: "",
-      chief: {},
-      levelChild: "",
-      chiefForSort: {},
-      id: JSON.parse(localStorage.getItem("idCount")) || 0,
-    },
+    id: JSON.parse(localStorage.getItem("idCount")) || 0,
     employeesData: JSON.parse(localStorage.getItem("employeesData")) || [],
-    maybeChief: JSON.parse(localStorage.getItem("maybeChief")) || [],
     agesEmployees: JSON.parse(localStorage.getItem("agesEmployees")) || [],
     namesEmployees: JSON.parse(localStorage.getItem("namesEmployees")) || [],
     genderCount: JSON.parse(localStorage.getItem("genderCount")) || [],
     genderPercent: JSON.parse(localStorage.getItem("genderPercent")) || [],
   },
   getters: {
-    checkAlerts(state) {
-      for (const key in state.alerts) {
-        if (Object.hasOwnProperty.call(state.alerts, key)) {
-          const element = state.alerts[key];
-          if (element) {
-            return element;
-          }
-        }
-      }
-    },
-    checkInputsForm(state) {
-      for (const key in state.formInputs) {
-        if (Object.hasOwnProperty.call(state.formInputs, key)) {
-          const element = state.formInputs[key];
-          if (
-            element === "" &&
-            key !== "chief" &&
-            key !== "levelChild" &&
-            key !== "chiefForSort" &&
-            key !== "id"
-          ) {
-            return true;
-          }
-        }
-      }
-    },
     sortNameByIncrease(state) {
       let sortedData = [],
         maxLevelChild = 0,
@@ -201,52 +153,20 @@ export default new Vuex.Store({
       let sortData = state.employeesData.map((item) => item);
       sortData.sort((a, b) => +b.phone - +a.phone);
       return sortData;
-      sort.sortPhone(state, a.phone, b.phone)
+      sort.sortPhone(state, a.phone, b.phone);
       // sortPhone(state, b.phone, a.phone)
     },
   },
   mutations: {
-    hideForm(state) {
-      state.formIsDisplay = false;
-    },
-    showForm(state) {
-      state.formIsDisplay = true;
-    },
-    bindFormInputs(state, obj) {
-      let { name, value } = obj;
-      state.formInputs[name] = value;
-    },
-    enableButtonForm(state) {
-      state.buttonFormIsDisabled = false;
-    },
-    disableButtonForm(state) {
-      state.buttonFormIsDisabled = true;
-    },
-    enableAlertInput(state, typeAlert) {
-      state.alerts[typeAlert] = true;
-    },
-    disableAlertInput(state, typeAlert) {
-      state.alerts[typeAlert] = false;
-    },
-    setEmployeesData(state) {
+    setEmployeesData(state, inputs) {
       let cloneFormRaw = {};
-      for (const key in state.formInputs) {
-        if (Object.hasOwnProperty.call(state.formInputs, key)) {
-          cloneFormRaw[key] = state.formInputs[key];
+      for (const key in inputs) {
+        if (Object.hasOwnProperty.call(inputs, key)) {
+          cloneFormRaw[key] = inputs[key];
         }
       }
       state.employeesData.push(cloneFormRaw);
-      state.maybeChief.push(cloneFormRaw);
-      state.formInputs = {
-        name: "",
-        gender: "",
-        age: "",
-        phone: "",
-        chief: {},
-        levelChild: "",
-        chiefForSort: {},
-        id: ++cloneFormRaw.id,
-      };
+      state.id = ++cloneFormRaw.id;
     },
     addLevelChild(state) {
       state.employeesData.forEach((item, index) => {
@@ -262,10 +182,6 @@ export default new Vuex.Store({
             state.employeesData.splice(-1, 1);
           }
         });
-      });
-      state.maybeChief.length = 0;
-      state.employeesData.forEach((item) => {
-        state.maybeChief.push(item);
       });
     },
     setStatistic(state) {
@@ -311,22 +227,20 @@ export default new Vuex.Store({
     },
     setLocalStorageData(state) {
       localStorage.setItem("employeesData", JSON.stringify(state.employeesData));
-      localStorage.setItem("maybeChief", JSON.stringify(state.maybeChief));
       localStorage.setItem("agesEmployees", JSON.stringify(state.agesEmployees));
       localStorage.setItem("namesEmployees", JSON.stringify(state.namesEmployees));
       localStorage.setItem("genderCount", JSON.stringify(state.genderCount));
       localStorage.setItem("genderPercent", JSON.stringify(state.genderPercent));
-      localStorage.setItem("idCount", JSON.stringify(state.formInputs.id));
+      localStorage.setItem("idCount", JSON.stringify(state.id));
     },
     clearData(state) {
       localStorage.clear();
       state.employeesData = [];
-      state.maybeChief = [];
       state.agesEmployees = [];
       state.namesEmployees = [];
       state.genderCount = [];
       state.genderPercent = [];
-      state.formInputs.id = 0;
+      state.id = 0;
     },
   },
   actions: {},

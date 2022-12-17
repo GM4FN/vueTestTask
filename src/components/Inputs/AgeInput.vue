@@ -1,63 +1,58 @@
 <template>
-  <div class="input-group mb-3">
-    <span
-      class="input-group-text d-inline-block"
-      id="basic-addon1">
-      Возраст
-    </span>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Сколько лет"
-      v-model="age"
-      @keyup="validateInput" />
+  <div>
+    <div class="input-group mb-2">
+      <span
+        class="input-group-text d-block"
+        id="basic-addon1">
+        Возраст
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Сколько лет"
+        v-model="age"
+        @keyup="validateInput" />
+    </div>
+    <alert-message v-show="alertAge"> Вы должны быть старше 18, но младше 120... </alert-message>
   </div>
 </template>
 
 <script>
+import alertMessage from "../AlertMessage.vue";
+
 export default {
   name: "age-input",
+  components: {
+    alertMessage,
+  },
   data() {
-    return {};
+    return {
+      alertAge: false,
+      age: "",
+    };
   },
   computed: {
-    age: {
-      get() {
-        return this.$store.state.employeesData.age;
-      },
-      set(value) {
-        this.$store.commit("bindFormInputs", { name: "age", value });
-      },
-    },
-    checkAlerts: {
-      get() {
-        return this.$store.getters.checkAlerts;
-      },
-    },
-    checkInputsForm: {
-      get() {
-        return this.$store.getters.checkInputsForm;
-      },
-    },
+   
   },
   methods: {
     validateInput() {
       if (
-        !Number.isInteger(+this.$store.state.formInputs.age) ||
-        this.$store.state.formInputs.age.match(/[А-яA-z]/g) ||
-        +this.$store.state.formInputs.age < 18 ||
-        +this.$store.state.formInputs.age > 120
+        !Number.isInteger(+this.age) ||
+        this.age.match(/[А-яA-z]/g) ||
+        +this.age < 18 ||
+        +this.age > 120
       ) {
-        this.$store.commit("enableAlertInput", "ageAlert");
-        this.$store.commit("disableButtonForm");
+        this.alertAge = true;
       } else {
-        this.$store.commit("disableAlertInput", "ageAlert");
-        if (this.checkAlerts || this.checkInputsForm) {
-          this.$store.commit("disableButtonForm");
-        } else {
-          this.$store.commit("enableButtonForm");
-        }
+        this.alertAge = false;
       }
+      let ageInputData = {
+        alert: this.alertAge,
+        alertType: "alertAge",
+        input: this.age,
+        inputType: "age",
+      };
+      this.$emit("set-age", ageInputData);
     },
   },
 };

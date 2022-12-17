@@ -16,7 +16,9 @@
       </button>
     </div>
     <employee-table />
-    <employee-form v-if="this.$store.state.formIsDisplay" />
+    <employee-form
+      v-if="formIsDisplay"
+      @hide-form="formIsDisplay = $event" />
   </section>
 </template>
 
@@ -29,11 +31,13 @@ export default {
     employeeTable,
   },
   data() {
-    return {};
+    return {
+      formIsDisplay: false,
+    };
   },
   methods: {
     showForm() {
-      this.$store.commit("showForm");
+      this.formIsDisplay = true;
     },
     clearData() {
       this.$store.commit("clearData");

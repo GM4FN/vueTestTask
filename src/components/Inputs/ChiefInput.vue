@@ -15,7 +15,7 @@
       </option>
       <option
         :value="chief"
-        v-for="chief in this.$store.state.maybeChief">
+        v-for="chief in this.$store.state.employeesData">
         {{ chief.name }}
       </option>
     </select>
@@ -34,7 +34,7 @@ export default {
         return this.$store.state.employeesData.chief;
       },
       set(value) {
-        this.$store.commit("bindFormInputs", { name: "chief", value });
+        this.$emit("set-chief", value)
       },
     },
   },

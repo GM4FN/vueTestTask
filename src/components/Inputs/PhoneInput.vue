@@ -1,62 +1,51 @@
 <template>
-  <div class="input-group mb-3">
-    <span
-      class="input-group-text d-inline-block"
-      id="basic-addon1">
-      Телефон
-    </span>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Номер телефона"
-      v-model="phone"
-      @keyup="validateInput" />
+  <div>
+    <div class="input-group mb-2">
+      <span
+        class="input-group-text d-block"
+        id="basic-addon1">
+        Телефон
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Номер телефона"
+        v-model="phone"
+        @keyup="validateInput" />
+    </div>
+    <alert-message v-show="alertPhone"> Введите телефон цифрами </alert-message>
   </div>
 </template>
 
 <script>
+import alertMessage from "../AlertMessage.vue";
+
 export default {
   name: "phone-input",
+  components: {
+    alertMessage,
+  },
   data() {
-    return {};
+    return {
+      alertPhone: false,
+      phone: "",
+    };
   },
-  computed: {
-    phone: {
-      get() {
-        return this.$store.state.employeesData.phone;
-      },
-      set(value) {
-        this.$store.commit("bindFormInputs", { name: "phone", value });
-      },
-    },
-    checkAlerts: {
-      get() {
-        return this.$store.getters.checkAlerts;
-      },
-    },
-    checkInputsForm: {
-      get() {
-        return this.$store.getters.checkInputsForm;
-      },
-    },
-  },
+  computed: {},
   methods: {
     validateInput() {
-      if (
-        this.$store.state.formInputs.phone.match(/[А-яA-z]/g) ||
-        this.$store.state.formInputs.phone.match(/\s/g) ||
-        this.$store.state.formInputs.phone === ""
-      ) {
-        this.$store.commit("enableAlertInput", "phoneAlert");
-        this.$store.commit("disableButtonForm");
+      if (this.phone.match(/[А-яA-z]/g) || this.phone.match(/\s/g) || this.phone === "") {
+        this.alertPhone = true;
       } else {
-        this.$store.commit("disableAlertInput", "phoneAlert");
-        if (this.checkAlerts || this.checkInputsForm) {
-          this.$store.commit("disableButtonForm");
-        } else {
-          this.$store.commit("enableButtonForm");
-        }
+        this.alertPhone = false;
       }
+      let phoneInputData = {
+        alert: this.alertPhone,
+        alertType: "alertPhone",
+        input: this.phone,
+        inputType: "phone",
+      };
+      this.$emit("set-phone", phoneInputData);
     },
   },
 };
