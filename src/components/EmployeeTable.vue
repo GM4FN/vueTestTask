@@ -80,79 +80,53 @@ export default {
         { key: "phone", label: "Телефон" },
       ],
       sort: "",
+      items: this.$store.state.employeesData,
     };
   },
-  computed: {
-    items: {
-      get() {
-        switch (this.sort) {
-          case this.$store.getters.sortNameByIncrease:
-            return this.sort;
-          case this.$store.getters.sortNameByDecrease:
-            return this.sort;
-          case this.$store.getters.sortGenderByIncrease:
-            return this.sort;
-          case this.$store.getters.sortGenderByDecrease:
-            return this.sort;
-          case this.$store.getters.sortAgeByIncrease:
-            return this.sort;
-          case this.$store.getters.sortAgeByDecrease:
-            return this.sort;
-          case this.$store.getters.sortPhoneByIncrease:
-            return this.sort;
-          case this.$store.getters.sortPhoneByDecrease:
-            return this.sort;
-        }
-        return this.$store.state.employeesData;
-      },
-      set(value) {
-        this.sort = value;
-      },
-    },
-  },
+  computed: {},
   methods: {
     sortByName(event) {
       const buttonValue = event.target.value;
       if (buttonValue === "nameIncrease") {
-        this.items = this.$store.getters.sortNameByIncrease;
+        this.items = this.$store.getters.sortByName([1, -1]);
         event.target.value = "nameDecrease";
       } else if (buttonValue === "nameDecrease") {
-        this.items = this.$store.getters.sortNameByDecrease;
+        this.items = this.$store.getters.sortByName([-1, 1]);
         event.target.value = "nameIncrease";
       }
     },
     sortByGender(event) {
       const buttonValue = event.target.value;
       if (buttonValue === "genderIncrease") {
-        this.items = this.$store.getters.sortGenderByIncrease;
+        this.items = this.$store.getters.sortByGender([1, -1]);
         event.target.value = "genderDecrease";
       } else if (buttonValue === "genderDecrease") {
-        this.items = this.$store.getters.sortGenderByDecrease;
+        this.items = this.$store.getters.sortByGender([-1, 1]);
         event.target.value = "genderIncrease";
       }
     },
     sortByAge(event) {
       const buttonValue = event.target.value;
       if (buttonValue === "ageIncrease") {
-        this.items = this.$store.getters.sortAgeByIncrease;
+        this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "age");
         event.target.value = "ageDecrease";
       } else if (buttonValue === "ageDecrease") {
-        this.items = this.$store.getters.sortAgeByDecrease;
+        this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "age");
         event.target.value = "ageIncrease";
       }
     },
     sortByPhone(event) {
       const buttonValue = event.target.value;
       if (buttonValue === "phoneIncrease") {
-        this.items = this.$store.getters.sortPhoneByIncrease;
+        this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "phone");
         event.target.value = "phoneDecrease";
       } else if (buttonValue === "phoneDecrease") {
-        this.items = this.$store.getters.sortPhoneByDecrease;
+        this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "phone");
         event.target.value = "phoneIncrease";
       }
     },
-    sortByDefault(event) {
-      this.items = event.target.value;
+    sortByDefault() {
+      this.items = this.$store.state.employeesData;
     },
   },
 };

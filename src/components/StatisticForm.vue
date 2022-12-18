@@ -7,13 +7,14 @@
       <div class="align-self-center mb-2">Являетесь ли вы сотрудником?</div>
       <name-input @set-name="setDataFromInputs" />
       <phone-input @set-phone="setDataFromInputs" />
+      <alert-message v-show="isDataCorrect">Проверьте введенные данные</alert-message>
       <button
         class="btn btn-primary align-self-center mb-2"
         :disabled="buttonIsDisabled"
         @click.prevent="checkData">
         Проверить
       </button>
-      <alert-message v-show="isDataCorrect">Проверьте введенные данные</alert-message>
+      
     </form>
   </section>
 </template>
@@ -65,7 +66,7 @@ export default {
       for (const key in this.$store.state.employeesData) {
         const element = this.$store.state.employeesData[key];
         if (element.name === this.inputs.name && element.phone === this.inputs.phone) {
-          this.$emit("check-data");
+          this.$emit("update-display");
         } else {
           this.isDataCorrect = true;
         }

@@ -34,7 +34,7 @@ export default {
   computed: {},
   methods: {
     validateInput() {
-      if (!this.name.match(/[А-яA-z]/g) || this.name.match(/[0-9]/g)) {
+      if (!this.name.match(/^[А-яЁёA-z]+$/g) || this.name.match(/[0-9]/g)) {
         this.alertName = true;
       } else {
         this.alertName = false;

@@ -4,7 +4,7 @@
       <bar-statistic />
       <pie-statistic />
     </section>
-    <statistic-form v-else-if="formIsDisplay" @check-data="showStatistic"/>
+    <statistic-form v-else-if="formIsDisplay" @update-display="showStatistic"/>
   </div>
 </template>
 
