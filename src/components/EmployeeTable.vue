@@ -23,6 +23,9 @@
           @click="sortByName"
           value="nameIncrease">
           {{ fields.label }}
+          <arrows-sort
+            :arrow-down="arrows.down.name"
+            :arrow-up="arrows.up.name" />
         </button>
       </template>
       <template #head(gender)="fields">
@@ -32,6 +35,9 @@
           @click="sortByGender"
           value="genderIncrease">
           {{ fields.label }}
+          <arrows-sort
+            :arrow-down="arrows.down.gender"
+            :arrow-up="arrows.up.gender" />
         </button>
       </template>
       <template #head(age)="fields">
@@ -41,6 +47,9 @@
           @click="sortByAge"
           value="ageIncrease">
           {{ fields.label }}
+          <arrows-sort
+            :arrow-down="arrows.down.age"
+            :arrow-up="arrows.up.age" />
         </button>
       </template>
       <template #head(phone)="fields">
@@ -50,6 +59,9 @@
           @click="sortByPhone"
           value="phoneIncrease">
           {{ fields.label }}
+          <arrows-sort
+            :arrow-down="arrows.down.phone"
+            :arrow-up="arrows.up.phone" />
         </button>
       </template>
 
@@ -68,9 +80,13 @@
 </template>
 
 <script>
+import arrowsSort from "./ArrowsSort.vue";
+
 export default {
   name: "employee-table",
-  components: {},
+  components: {
+    arrowsSort,
+  },
   data() {
     return {
       fields: [
@@ -81,6 +97,20 @@ export default {
       ],
       sort: "",
       items: this.$store.state.employeesData,
+      arrows: {
+        down: {
+          name: false,
+          gender: false,
+          age: false,
+          phone: false,
+        },
+        up: {
+          name: true,
+          gender: true,
+          age: true,
+          phone: true,
+        },
+      },
     };
   },
   computed: {},
@@ -89,9 +119,13 @@ export default {
       const buttonValue = event.target.value;
       if (buttonValue === "nameIncrease") {
         this.items = this.$store.getters.sortByName([1, -1]);
+        this.arrows.up.name = false;
+        this.arrows.down.name = true;
         event.target.value = "nameDecrease";
       } else if (buttonValue === "nameDecrease") {
         this.items = this.$store.getters.sortByName([-1, 1]);
+        this.arrows.up.name = true;
+        this.arrows.down.name = false;
         event.target.value = "nameIncrease";
       }
     },
@@ -99,9 +133,13 @@ export default {
       const buttonValue = event.target.value;
       if (buttonValue === "genderIncrease") {
         this.items = this.$store.getters.sortByGender([1, -1]);
+        this.arrows.up.gender = false;
+        this.arrows.down.gender = true;
         event.target.value = "genderDecrease";
       } else if (buttonValue === "genderDecrease") {
         this.items = this.$store.getters.sortByGender([-1, 1]);
+        this.arrows.up.gender = true;
+        this.arrows.down.gender = false;
         event.target.value = "genderIncrease";
       }
     },
@@ -109,9 +147,13 @@ export default {
       const buttonValue = event.target.value;
       if (buttonValue === "ageIncrease") {
         this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "age");
+        this.arrows.up.age = true;
+        this.arrows.down.age = false;
         event.target.value = "ageDecrease";
       } else if (buttonValue === "ageDecrease") {
         this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "age");
+        this.arrows.up.age = false;
+        this.arrows.down.age = true;
         event.target.value = "ageIncrease";
       }
     },
@@ -119,14 +161,24 @@ export default {
       const buttonValue = event.target.value;
       if (buttonValue === "phoneIncrease") {
         this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "phone");
+        this.arrows.up.phone = true;
+        this.arrows.down.phone = false;
         event.target.value = "phoneDecrease";
       } else if (buttonValue === "phoneDecrease") {
         this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "phone");
+        this.arrows.up.phone = false;
+        this.arrows.down.phone = true;
         event.target.value = "phoneIncrease";
       }
     },
     sortByDefault() {
       this.items = this.$store.state.employeesData;
+      for (const key in this.arrows.down) {
+        this.arrows.down[key] = false;
+      }
+      for (const key in this.arrows.up) {
+        this.arrows.up[key] = true;
+      }
     },
   },
 };
