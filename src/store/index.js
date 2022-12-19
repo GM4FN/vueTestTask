@@ -6,6 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    /**
+     * @param {Number} id - id сотрудника(для сортировки)
+     */
     id: JSON.parse(localStorage.getItem("idCount")) || 0,
     employeesData: JSON.parse(localStorage.getItem("employeesData")) || [],
     agesEmployees: JSON.parse(localStorage.getItem("agesEmployees")) || [],
@@ -110,6 +113,4 @@ export default new Vuex.Store({
       state.id = 0;
     },
   },
-  actions: {},
-  modules: {},
 });

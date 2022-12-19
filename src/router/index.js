@@ -1,19 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import employeeTableTab from "../components/tabs/EmployeeTableTab.vue";
+import statisticTab from "../components/tabs/StatisticTab.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-
   {
     path: "/workers",
-    name: "workerTableTab",
-    component: () => import("../components/tabs/EmployeeTableTab.vue"),
+    name: "employeeTableTab",
+    component: employeeTableTab,
   },
   {
     path: "/statistic",
     name: "statisticTab",
-    component: () => import("../components/tabs/StatisticTab.vue"),
+    component: statisticTab,
   },
 ];
 

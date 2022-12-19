@@ -80,8 +80,10 @@
 </template>
 
 <script>
+/**
+ * @vue-data {Array} items
+ */
 import arrowsSort from "./ArrowsSort.vue";
-
 export default {
   name: "employee-table",
   components: {
@@ -113,7 +115,6 @@ export default {
       },
     };
   },
-  computed: {},
   methods: {
     sortByName(event) {
       const buttonValue = event.target.value;

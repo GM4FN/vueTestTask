@@ -38,7 +38,6 @@ export default {
       gender: "",
     };
   },
-  computed: {},
   methods: {
     validateInput() {
       if (this.gender === "") {

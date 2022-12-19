@@ -43,7 +43,6 @@ export default {
       this.$store.commit("clearData");
     },
   },
-  computed: {},
 };
 </script>
 

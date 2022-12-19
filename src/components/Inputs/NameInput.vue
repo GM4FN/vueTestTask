@@ -31,7 +31,6 @@ export default {
       name: "",
     };
   },
-  computed: {},
   methods: {
     validateInput() {
       if (!this.name.match(/^[А-яЁёA-z]+$/g) || this.name.match(/[0-9]/g)) {

@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       buttonsAsideData: [
-        { id: 2, slot: "К сотрудникам", namePath: "workerTableTab" },
+        { id: 2, slot: "К сотрудникам", namePath: "employeeTableTab" },
         { id: 3, slot: "К статистике", namePath: "statisticTab" },
       ],
     };

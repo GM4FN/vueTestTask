@@ -25,9 +25,6 @@
 <script>
 export default {
   name: "chief-input",
-  data() {
-    return {};
-  },
   computed: {
     chief: {
       get() {

@@ -11,9 +11,6 @@
 import asideMenu from "./components/AsideMenu.vue";
 
 export default {
-  data() {
-    return {};
-  },
   components: { asideMenu },
 };
 </script>

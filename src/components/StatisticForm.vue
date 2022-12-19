@@ -14,7 +14,6 @@
         @click.prevent="checkData">
         Проверить
       </button>
-      
     </form>
   </section>
 </template>
@@ -71,7 +70,6 @@ export default {
           this.isDataCorrect = true;
         }
       }
-      
     },
     setDataFromInputs(data) {
       this.alerts[data.alertType] = data.alert;
@@ -93,7 +91,4 @@ export default {
     border: 2px solid rgba(150, 150, 150, 1 )
     border-radius: 10px
     background-color: white
-.input-group
-  span
-    width: 25%
 </style>

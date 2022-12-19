@@ -31,7 +31,6 @@ export default {
       phone: "",
     };
   },
-  computed: {},
   methods: {
     validateInput() {
       if (this.phone.match(/[А-яA-z]/g) || this.phone.match(/\s/g) || this.phone === "") {

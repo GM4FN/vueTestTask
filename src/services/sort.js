@@ -21,7 +21,7 @@ export default {
           return returns[1];
         }
         return 0;
-      })
+      });
       counterLevelChild += "-";
       sorting.forEach((item) => {
         if (!Object.hasOwnProperty.call(item.chiefForSort, "name")) {

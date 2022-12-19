@@ -9,9 +9,6 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
   name: "button-default-aside",
   props: {
     namePath: String,

@@ -31,9 +31,6 @@ export default {
       age: "",
     };
   },
-  computed: {
-   
-  },
   methods: {
     validateInput() {
       if (
