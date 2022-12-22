@@ -8,8 +8,8 @@
       </span>
       <select
         class="form-select"
-        v-model="gender"
-        @change="validateInput">
+        v-model="inputData.input"
+        @change="validateInput(), transmitData()">
         <option
           value=""
           selected>
@@ -20,7 +20,7 @@
         <option value="Неизвестно">Неизвестно</option>
       </select>
     </div>
-    <alert-message v-show="alertGender"> Введите пол </alert-message>
+    <alert-message v-show="inputData.alert"> Введите пол </alert-message>
   </div>
 </template>
 
@@ -34,24 +34,22 @@ export default {
   },
   data() {
     return {
-      alertGender: false,
-      gender: "",
+      inputData: {
+        alert: false,
+        input: "",
+      },
     };
   },
   methods: {
     validateInput() {
-      if (this.gender === "") {
-        this.alertGender = true;
+      if (this.inputData.input === "") {
+        this.inputData.alert = true;
       } else {
-        this.alertGender = false;
+        this.inputData.alert = false;
       }
-      let genderInputData = {
-        alert: this.alertGender,
-        alertType: "alertGender",
-        input: this.gender,
-        inputType: "gender",
-      };
-      this.$emit("set-gender", genderInputData);
+    },
+    transmitData() {
+      this.$emit("data-gender", { alert: this.inputData.alert, input: this.inputData.input });
     },
   },
 };

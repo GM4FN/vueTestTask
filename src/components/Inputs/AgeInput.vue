@@ -10,10 +10,12 @@
         type="text"
         class="form-control"
         placeholder="Сколько лет"
-        v-model="age"
-        @keyup="validateInput" />
+        v-model="inputData.input"
+        @keyup="validateInput(), transmitData()" />
     </div>
-    <alert-message v-show="alertAge"> Вы должны быть старше 18, но младше 120... </alert-message>
+    <alert-message v-show="inputData.alert">
+      Вы должны быть старше 18, но младше 120...
+    </alert-message>
   </div>
 </template>
 
@@ -27,29 +29,27 @@ export default {
   },
   data() {
     return {
-      alertAge: false,
-      age: "",
+      inputData: {
+        alert: false,
+        input: "",
+      },
     };
   },
   methods: {
     validateInput() {
       if (
-        !Number.isInteger(+this.age) ||
-        this.age.match(/[А-яA-z]/g) ||
-        +this.age < 18 ||
-        +this.age > 120
+        !Number.isInteger(+this.inputData.input) ||
+        this.inputData.input.match(/[А-яA-z]/g) ||
+        +this.inputData.input < 18 ||
+        +this.inputData.input > 120
       ) {
-        this.alertAge = true;
+        this.inputData.alert = true;
       } else {
-        this.alertAge = false;
+        this.inputData.alert = false;
       }
-      let ageInputData = {
-        alert: this.alertAge,
-        alertType: "alertAge",
-        input: this.age,
-        inputType: "age",
-      };
-      this.$emit("set-age", ageInputData);
+    },
+    transmitData() {
+      this.$emit("data-age", { alert: this.inputData.alert, input: this.inputData.input });
     },
   },
 };

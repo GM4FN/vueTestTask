@@ -10,10 +10,10 @@
         type="text"
         class="form-control"
         placeholder="Номер телефона"
-        v-model="phone"
-        @keyup="validateInput" />
+        v-model="inputData.input"
+        @keyup="validateInput(), transmitData()" />
     </div>
-    <alert-message v-show="alertPhone"> Введите телефон цифрами </alert-message>
+    <alert-message v-show="inputData.alert"> Введите телефон цифрами </alert-message>
   </div>
 </template>
 
@@ -27,24 +27,26 @@ export default {
   },
   data() {
     return {
-      alertPhone: false,
-      phone: "",
+      inputData: {
+        alert: false,
+        input: "",
+      },
     };
   },
   methods: {
     validateInput() {
-      if (this.phone.match(/[А-яA-z]/g) || this.phone.match(/\s/g) || this.phone === "") {
-        this.alertPhone = true;
+      if (
+        this.inputData.input.match(/[А-яA-z]/g) ||
+        this.inputData.input.match(/\s/g) ||
+        this.inputData.input === ""
+      ) {
+        this.inputData.alert = true;
       } else {
-        this.alertPhone = false;
+        this.inputData.alert = false;
       }
-      let phoneInputData = {
-        alert: this.alertPhone,
-        alertType: "alertPhone",
-        input: this.phone,
-        inputType: "phone",
-      };
-      this.$emit("set-phone", phoneInputData);
+    },
+    transmitData() {
+      this.$emit("data-phone", { alert: this.inputData.alert, input: this.inputData.input });
     },
   },
 };

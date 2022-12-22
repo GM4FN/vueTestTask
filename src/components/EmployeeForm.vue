@@ -9,11 +9,13 @@
         class="btn-close align-self-end justify-center mb-1"
         @click="hideForm"></button>
       <div class="align-self-center mb-2">Добавить сотрудника</div>
-      <name-input @set-name="setDataFromInputs" />
-      <gender-input @set-gender="setDataFromInputs" />
-      <age-input @set-age="setDataFromInputs" />
-      <phone-input @set-phone="setDataFromInputs" />
-      <chief-input @set-chief="inputs.chief = $event" />
+      <name-input @data-name="(alerts.alertName = $event.alert), (inputs.name = $event.input)" />
+      <gender-input
+        @data-gender="(alerts.alertGender = $event.alert), (inputs.gender = $event.input)" />
+      <age-input @data-age="(alerts.alertAge = $event.alert), (inputs.age = $event.input)" />
+      <phone-input
+        @data-phone="(alerts.alertPhone = $event.alert), (inputs.phone = $event.input)" />
+      <chief-input @data-chief="inputs.chief = $event" />
       <button
         class="btn btn-primary align-self-center"
         :disabled="buttonIsDisabled"
@@ -97,10 +99,6 @@ export default {
       this.$store.commit("setStatistic");
       this.$store.commit("setPercentGender");
       this.$store.commit("setLocalStorageData");
-    },
-    setDataFromInputs(data) {
-      this.alerts[data.alertType] = data.alert;
-      this.inputs[data.inputType] = data.input;
     },
   },
 };

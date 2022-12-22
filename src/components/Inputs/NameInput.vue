@@ -10,10 +10,10 @@
         type="text"
         class="form-control"
         placeholder="Как зовут"
-        v-model="name"
-        @keyup="validateInput" />
+        v-model="inputData.input"
+        @keyup="validateInput(), transmitData()" />
     </div>
-    <alert-message v-show="alertName"> Имя должно содержать только буквы </alert-message>
+    <alert-message v-show="inputData.alert"> Имя должно содержать только буквы </alert-message>
   </div>
 </template>
 
@@ -27,24 +27,22 @@ export default {
   },
   data() {
     return {
-      alertName: false,
-      name: "",
+      inputData: {
+        alert: false,
+        input: "",
+      },
     };
   },
   methods: {
     validateInput() {
-      if (!this.name.match(/^[А-яЁёA-z]+$/g) || this.name.match(/[0-9]/g)) {
-        this.alertName = true;
+      if (!this.inputData.input.match(/^[А-яЁёA-z]+$/g) || this.inputData.input.match(/[0-9]/g)) {
+        this.inputData.alert = true;
       } else {
-        this.alertName = false;
+        this.inputData.alert = false;
       }
-      let nameInputData = {
-        alert: this.alertName,
-        alertType: "alertName",
-        input: this.name,
-        inputType: "name",
-      };
-      this.$emit("set-name", nameInputData);
+    },
+    transmitData() {
+      this.$emit("data-name", { alert: this.inputData.alert, input: this.inputData.input });
     },
   },
 };
