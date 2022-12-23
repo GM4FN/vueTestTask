@@ -20,7 +20,7 @@
         <button
           class="btn btn-light"
           type="button"
-          @click="sortByName"
+          @click="sort($event, 'name', 'Name')"
           value="nameIncrease">
           {{ fields.label }}
           <arrows-sort
@@ -32,7 +32,7 @@
         <button
           class="btn btn-light"
           type="button"
-          @click="sortByGender"
+          @click="sort($event, 'gender', 'Gender')"
           value="genderIncrease">
           {{ fields.label }}
           <arrows-sort
@@ -44,7 +44,7 @@
         <button
           class="btn btn-light"
           type="button"
-          @click="sortByAge"
+          @click="sort($event, 'age', 'Age')"
           value="ageIncrease">
           {{ fields.label }}
           <arrows-sort
@@ -56,7 +56,7 @@
         <button
           class="btn btn-light"
           type="button"
-          @click="sortByPhone"
+          @click="sort($event, 'phone', 'Phone')"
           value="phoneIncrease">
           {{ fields.label }}
           <arrows-sort
@@ -80,10 +80,9 @@
 </template>
 
 <script>
-/**
- * @vue-data {Array} items
- */
+import sorting from "../services/sort";
 import arrowsSort from "./ArrowsSort.vue";
+
 export default {
   name: "employee-table",
   components: {
@@ -97,8 +96,6 @@ export default {
         { key: "age", label: "Возраст" },
         { key: "phone", label: "Телефон" },
       ],
-      sort: "",
-      items: this.$store.state.employeesData,
       arrows: {
         down: {
           name: false,
@@ -113,63 +110,24 @@ export default {
           phone: true,
         },
       },
+      items: this.$store.state.employeesData,
+      directionByIncrease: [1, -1],
+      directionByDecrease: [-1, 1],
     };
   },
   methods: {
-    sortByName(event) {
+    sort(event, title, titleForSorting) {
       const buttonValue = event.target.value;
-      if (buttonValue === "nameIncrease") {
-        this.items = this.$store.getters.sortByName([1, -1]);
-        this.arrows.up.name = false;
-        this.arrows.down.name = true;
-        event.target.value = "nameDecrease";
-      } else if (buttonValue === "nameDecrease") {
-        this.items = this.$store.getters.sortByName([-1, 1]);
-        this.arrows.up.name = true;
-        this.arrows.down.name = false;
-        event.target.value = "nameIncrease";
-      }
-    },
-    sortByGender(event) {
-      const buttonValue = event.target.value;
-      if (buttonValue === "genderIncrease") {
-        this.items = this.$store.getters.sortByGender([1, -1]);
-        this.arrows.up.gender = false;
-        this.arrows.down.gender = true;
-        event.target.value = "genderDecrease";
-      } else if (buttonValue === "genderDecrease") {
-        this.items = this.$store.getters.sortByGender([-1, 1]);
-        this.arrows.up.gender = true;
-        this.arrows.down.gender = false;
-        event.target.value = "genderIncrease";
-      }
-    },
-    sortByAge(event) {
-      const buttonValue = event.target.value;
-      if (buttonValue === "ageIncrease") {
-        this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "age");
-        this.arrows.up.age = true;
-        this.arrows.down.age = false;
-        event.target.value = "ageDecrease";
-      } else if (buttonValue === "ageDecrease") {
-        this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "age");
-        this.arrows.up.age = false;
-        this.arrows.down.age = true;
-        event.target.value = "ageIncrease";
-      }
-    },
-    sortByPhone(event) {
-      const buttonValue = event.target.value;
-      if (buttonValue === "phoneIncrease") {
-        this.items = this.$store.getters.sortByAgeOrPhone([1, -1], "phone");
-        this.arrows.up.phone = true;
-        this.arrows.down.phone = false;
-        event.target.value = "phoneDecrease";
-      } else if (buttonValue === "phoneDecrease") {
-        this.items = this.$store.getters.sortByAgeOrPhone([-1, 1], "phone");
-        this.arrows.up.phone = false;
-        this.arrows.down.phone = true;
-        event.target.value = "phoneIncrease";
+      if (buttonValue === title + "Increase") {
+        this.items = sorting["sort" + titleForSorting](this.$store.state, this.directionByIncrease);
+        this.arrows.up[title] = false;
+        this.arrows.down[title] = true;
+        event.target.value = title + "Decrease";
+      } else if (buttonValue === title + "Decrease") {
+        this.items = sorting["sort" + titleForSorting](this.$store.state, this.directionByDecrease);
+        this.arrows.up[title] = true;
+        this.arrows.down[title] = false;
+        event.target.value = title + "Increase";
       }
     },
     sortByDefault() {

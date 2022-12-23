@@ -9,13 +9,19 @@
         class="btn-close align-self-end justify-center mb-1"
         @click="hideForm"></button>
       <div class="align-self-center mb-2">Добавить сотрудника</div>
-      <name-input @data-name="(alerts.alertName = $event.alert), (inputs.name = $event.input)" />
+      <name-input
+        :data-name-alert.sync="alerts.alertName"
+        :data-name-input.sync="inputs.name" />
       <gender-input
-        @data-gender="(alerts.alertGender = $event.alert), (inputs.gender = $event.input)" />
-      <age-input @data-age="(alerts.alertAge = $event.alert), (inputs.age = $event.input)" />
+        :data-gender-alert.sync="alerts.alertGender"
+        :data-gender-input.sync="inputs.gender" />
+      <age-input
+        :data-age-alert.sync="alerts.alertAge"
+        :data-age-input.sync="inputs.age" />
       <phone-input
-        @data-phone="(alerts.alertPhone = $event.alert), (inputs.phone = $event.input)" />
-      <chief-input @data-chief="inputs.chief = $event" />
+        :data-phone-alert.sync="alerts.alertPhone"
+        :data-phone-input.sync="inputs.phone" />
+      <chief-input :data-chief.sync="inputs.chief" />
       <button
         class="btn btn-primary align-self-center"
         :disabled="buttonIsDisabled"

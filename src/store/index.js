@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import sort from "../services/sort.js";
 
 Vue.use(Vuex);
 
@@ -16,17 +15,7 @@ export default new Vuex.Store({
     genderCount: JSON.parse(localStorage.getItem("genderCount")) || [],
     genderPercent: JSON.parse(localStorage.getItem("genderPercent")) || [],
   },
-  getters: {
-    sortByName: (state) => (returns) => {
-      return sort.sortName(state, returns);
-    },
-    sortByGender: (state) => (returns) => {
-      return sort.sortGender(state, returns);
-    },
-    sortByAgeOrPhone: (state) => (returns, sortingBy) => {
-      return sort.sortAgeOrPhone(state, returns, sortingBy);
-    },
-  },
+  getters: {},
   mutations: {
     setEmployeesData(state, inputs) {
       let cloneFormRaw = {};

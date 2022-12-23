@@ -49,7 +49,8 @@ export default {
       }
     },
     transmitData() {
-      this.$emit("data-age", { alert: this.inputData.alert, input: this.inputData.input });
+      this.$emit("update:data-age-alert", this.inputData.alert);
+      this.$emit("update:data-age-input", this.inputData.input );
     },
   },
 };

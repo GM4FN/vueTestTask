@@ -1,23 +1,17 @@
 <template>
   <span>
-    <svg
-      width="24"
-      height="24"
-      xmlns="http://www.w3.org/2000/svg"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      v-show="arrowDown">
-      <path d="M23.245 4l-11.245 14.374-11.219-14.374-.781.619 12 15.381 12-15.391-.755-.609z" />
-    </svg>
-    <svg
-      width="24"
-      height="24"
-      xmlns="http://www.w3.org/2000/svg"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      v-show="arrowUp">
-      <path d="M23.245 20l-11.245-14.374-11.219 14.374-.781-.619 12-15.381 12 15.391-.755.609z" />
-    </svg>
+    <img
+      src="../images/iconmonstr-angel-down.png"
+      alt=""
+      width="15"
+      height="15"
+      v-show="arrowDown" />
+    <img
+      src="../images/iconmonstr-angel-up.png"
+      alt=""
+      width="15"
+      height="15"
+      v-show="arrowUp" />
   </span>
 </template>
 <script>
@@ -26,11 +20,16 @@ export default {
   props: {
     arrowDown: Boolean,
     arrowUp: Boolean,
-  }
+  },
+  methods: {
+    transmit() {
+      this.$emit("transmit-svg-click-data");
+    },
+  },
 };
 </script>
 
 <style lang="sass" scoped>
-svg
-  scale: 0.5
+span
+  pointer-events: auto
 </style>

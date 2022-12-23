@@ -58,13 +58,26 @@ export default {
     });
     return sortData;
   },
-  sortAgeOrPhone(state, returns, sortingBy) {
+  sortAge(state, returns) {
     let sortData = state.employeesData.map((item) => item);
     sortData.sort(function (a, b) {
-      if (+a[sortingBy] > +b[sortingBy]) {
+      if (+a.age > +b.age) {
         return returns[0];
       }
-      if (+a[sortingBy] < +b[sortingBy]) {
+      if (+a.age < +b.age) {
+        return returns[1];
+      }
+      return 0;
+    });
+    return sortData;
+  },
+  sortPhone(state, returns) {
+    let sortData = state.employeesData.map((item) => item);
+    sortData.sort(function (a, b) {
+      if (+a.phone > +b.phone) {
+        return returns[0];
+      }
+      if (+a.phone < +b.phone) {
         return returns[1];
       }
       return 0;

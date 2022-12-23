@@ -49,7 +49,8 @@ export default {
       }
     },
     transmitData() {
-      this.$emit("data-gender", { alert: this.inputData.alert, input: this.inputData.input });
+      this.$emit("update:data-gender-alert", this.inputData.alert);
+      this.$emit("update:data-gender-input", this.inputData.input);
     },
   },
 };

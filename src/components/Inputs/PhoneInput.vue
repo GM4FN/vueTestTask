@@ -46,7 +46,8 @@ export default {
       }
     },
     transmitData() {
-      this.$emit("data-phone", { alert: this.inputData.alert, input: this.inputData.input });
+      this.$emit("update:data-phone-alert", this.inputData.alert);
+      this.$emit("update:data-phone-input", this.inputData.input );
     },
   },
 };

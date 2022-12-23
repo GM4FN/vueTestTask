@@ -31,7 +31,7 @@ export default {
         return this.$store.state.employeesData.chief;
       },
       set(value) {
-        this.$emit("data-chief", value)
+        this.$emit("update:data-chief", value)
       },
     },
   },

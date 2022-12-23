@@ -5,8 +5,12 @@
       class="statistic-form-modal d-flex flex-column align-self-center"
       @submit.prevent="">
       <div class="align-self-center mb-2">Являетесь ли вы сотрудником?</div>
-      <name-input @set-name="setDataFromInputs" />
-      <phone-input @set-phone="setDataFromInputs" />
+      <name-input
+        :data-name-alert.sync="alerts.alertName"
+        :data-name-input.sync="inputs.name" />
+      <phone-input
+        :data-phone-alert.sync="alerts.alertPhone"
+        :data-phone-input.sync="inputs.phone" />
       <alert-message v-show="isDataCorrect">Проверьте введенные данные</alert-message>
       <button
         class="btn btn-primary align-self-center mb-2"
@@ -70,10 +74,6 @@ export default {
           this.isDataCorrect = true;
         }
       }
-    },
-    setDataFromInputs(data) {
-      this.alerts[data.alertType] = data.alert;
-      this.inputs[data.inputType] = data.input;
     },
   },
 };

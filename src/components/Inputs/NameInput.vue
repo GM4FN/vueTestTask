@@ -42,7 +42,8 @@ export default {
       }
     },
     transmitData() {
-      this.$emit("data-name", { alert: this.inputData.alert, input: this.inputData.input });
+      this.$emit("update:data-name-alert", this.inputData.alert);
+      this.$emit("update:data-name-input", this.inputData.input );
     },
   },
 };
