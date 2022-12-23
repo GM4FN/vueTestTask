@@ -26,12 +26,15 @@
 export default {
   name: "chief-input",
   computed: {
+    /**
+     * @param {object} chief Данные руководителя
+     */
     chief: {
       get() {
         return this.$store.state.employeesData.chief;
       },
       set(value) {
-        this.$emit("update:data-chief", value)
+        this.$emit("update:data-chief", value);
       },
     },
   },

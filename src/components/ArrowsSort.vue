@@ -21,15 +21,8 @@ export default {
     arrowDown: Boolean,
     arrowUp: Boolean,
   },
-  methods: {
-    transmit() {
-      this.$emit("transmit-svg-click-data");
-    },
-  },
 };
 </script>
 
 <style lang="sass" scoped>
-span
-  pointer-events: auto
 </style>

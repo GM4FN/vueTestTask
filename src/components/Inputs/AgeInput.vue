@@ -29,7 +29,14 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object} inputData Данные поля ввода
+       */
       inputData: {
+        /**
+         * @param {boolean} alert Данные поля ввода
+         * @param {string} input Данные поля ввода
+         */
         alert: false,
         input: "",
       },
@@ -50,7 +57,7 @@ export default {
     },
     transmitData() {
       this.$emit("update:data-age-alert", this.inputData.alert);
-      this.$emit("update:data-age-input", this.inputData.input );
+      this.$emit("update:data-age-input", this.inputData.input);
     },
   },
 };

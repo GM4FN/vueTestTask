@@ -36,11 +36,24 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object} alerts
+       * @param {object} inputs
+       * @param {boolean} isDataCorrect
+       */
       alerts: {
+        /**
+         * @param {boolean} alertName
+         * @param {boolean} alertPhone
+         */
         alertName: true,
         alertPhone: true,
       },
       inputs: {
+        /**
+         * @param {string} name
+         * @param {string} phone
+         */
         name: "",
         phone: "",
       },
@@ -48,6 +61,9 @@ export default {
     };
   },
   computed: {
+    /**
+     * @param {boolean} buttonIsDisabled
+     */
     buttonIsDisabled: {
       get() {
         for (const key in this.alerts) {
@@ -65,6 +81,9 @@ export default {
     hideForm() {
       this.buttonIsDisabled = true;
     },
+    /**
+     * Сравнивает данные из полей ввода и основного массива таблицы и передаёт в родителя, если правильно ввели
+     */
     checkData() {
       for (const key in this.$store.state.employeesData) {
         const element = this.$store.state.employeesData[key];

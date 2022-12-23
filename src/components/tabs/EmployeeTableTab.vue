@@ -32,6 +32,9 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {boolean} formIsDisplay Отображается ли форма
+       */
       formIsDisplay: false,
     };
   },
@@ -39,6 +42,9 @@ export default {
     showForm() {
       this.formIsDisplay = true;
     },
+    /**
+     * Очищает все данные из Store
+     */
     clearData() {
       this.$store.commit("clearData");
     },

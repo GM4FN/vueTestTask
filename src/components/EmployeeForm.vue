@@ -50,13 +50,35 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object} alerts
+       */
       alerts: {
+        /**
+         * @param {boolean} alertName
+         * @param {boolean} alertGender
+         * @param {boolean} alertAge
+         * @param {boolean} alertPhone
+         */
         alertName: true,
         alertGender: true,
         alertAge: true,
         alertPhone: true,
       },
+      /**
+       * @param {object} inputs
+       */
       inputs: {
+        /**
+         * @param {string} name
+         * @param {string} gender
+         * @param {string} age
+         * @param {string} phone
+         * @param {object} chief
+         * @param {string} levelChild
+         * @param {object} chiefForSort
+         * @param {number} id
+         */
         name: "",
         gender: "",
         age: "",
@@ -69,6 +91,9 @@ export default {
     };
   },
   computed: {
+    /**
+     * @param {boolean} buttonIsDisabled
+     */
     buttonIsDisabled: {
       get() {
         for (const key in this.alerts) {

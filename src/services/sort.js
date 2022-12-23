@@ -1,5 +1,16 @@
 export default {
+  /**
+   * Сортирует по имени таблицу
+   * @param {object} state State из главного store
+   * @param {number[]} returns Массив из 2 чисел, определяет направление сортировки
+   * @returns {object[]} Отсортированный по имени новый массив
+   */
   sortName(state, returns) {
+    /**
+     * @param {object[]} sortData Отсортированный массив
+     * @param {number} maxLevelChild Максимальный уровень вложенности
+     * @param {string} counterLevelChild Счётчик уровня вложенности
+     */
     let sortData = [],
       maxLevelChild = 0,
       counterLevelChild = "";
@@ -7,7 +18,13 @@ export default {
       maxLevelChild = Math.max(maxLevelChild, item.levelChild.length);
     });
     sortAllLevels();
+    /**
+     * @returns {void} Сортирует каждый уровень вложенности и записывает в sortData по порядку
+     */
     function sortAllLevels() {
+      /**
+       * @param {object[]} sorting Скопированный массив таблицы
+       */
       let sorting = state.employeesData.filter(
         (employee) => employee.levelChild === counterLevelChild
       );
@@ -45,7 +62,16 @@ export default {
     }
     return sortData;
   },
+  /**
+   * Сортирует по полу таблицу
+   * @param {object} state State из главного store
+   * @param {number[]} returns Массив из 2 чисел, определяет направление сортировки
+   * @returns {object[]} Отсортированный по полу новый массив
+   */
   sortGender(state, returns) {
+    /**
+     * @param {object[]} sortData Отсортированный массив
+     */
     let sortData = state.employeesData.map((item) => item);
     sortData.sort(function (a, b) {
       if (a.gender > b.gender) {
@@ -58,7 +84,16 @@ export default {
     });
     return sortData;
   },
+  /**
+   * Сортирует по возрасту таблицу
+   * @param {object} state State из главного store
+   * @param {number[]} returns Массив из 2 чисел, определяет направление сортировки
+   * @returns {object[]} Отсортированный по возрасту новый массив
+   */
   sortAge(state, returns) {
+    /**
+     * @param {object[]} sortData Отсортированный массив
+     */
     let sortData = state.employeesData.map((item) => item);
     sortData.sort(function (a, b) {
       if (+a.age > +b.age) {
@@ -71,7 +106,16 @@ export default {
     });
     return sortData;
   },
+  /**
+   * Сортирует по телефону таблицу
+   * @param {object} state State из главного store
+   * @param {number[]} returns Массив из 2 чисел, определяет направление сортировки
+   * @returns {object[]} Отсортированный по телефону новый массив
+   */
   sortPhone(state, returns) {
+    /**
+     * @param {object[]} sortData Отсортированный массив
+     */
     let sortData = state.employeesData.map((item) => item);
     sortData.sort(function (a, b) {
       if (+a.phone > +b.phone) {

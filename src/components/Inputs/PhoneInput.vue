@@ -27,7 +27,14 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object} inputData Данные поля ввода
+       */
       inputData: {
+        /**
+         * @param {boolean} alert Данные поля ввода
+         * @param {string} input Данные поля ввода
+         */
         alert: false,
         input: "",
       },
@@ -47,7 +54,7 @@ export default {
     },
     transmitData() {
       this.$emit("update:data-phone-alert", this.inputData.alert);
-      this.$emit("update:data-phone-input", this.inputData.input );
+      this.$emit("update:data-phone-input", this.inputData.input);
     },
   },
 };

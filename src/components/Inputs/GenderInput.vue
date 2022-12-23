@@ -34,7 +34,14 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object} inputData Данные поля ввода
+       */
       inputData: {
+        /**
+         * @param {boolean} alert Данные поля ввода
+         * @param {string} input Данные поля ввода
+         */
         alert: false,
         input: "",
       },

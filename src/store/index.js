@@ -6,7 +6,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     /**
-     * @param {Number} id - id сотрудника(для сортировки)
+     * @param {number} id id сотрудника(для сортировки)
+     * @param {object[]} employeesData Основной массив таблицы сотрудников
+     * @param {string[]} agesEmployees Массив из возрастов сотрудников
+     * @param {string[]} namesEmployees Массив из имен сотрудников
+     * @param {number[]} genderCount Массив из счётчиков на каждый пол
+     * @param {number[]} genderPercent Массив из процентов на каждый пол
      */
     id: JSON.parse(localStorage.getItem("idCount")) || 0,
     employeesData: JSON.parse(localStorage.getItem("employeesData")) || [],
@@ -17,6 +22,11 @@ export default new Vuex.Store({
   },
   getters: {},
   mutations: {
+    /**
+     * Задает state.employeesData из полей ввода inputs
+     * @param {object} state
+     * @param {object} inputs
+     */
     setEmployeesData(state, inputs) {
       let cloneFormRaw = {};
       for (const key in inputs) {
@@ -27,6 +37,10 @@ export default new Vuex.Store({
       state.employeesData.push(cloneFormRaw);
       state.id = ++cloneFormRaw.id;
     },
+    /**
+     * Добавляет вложенность дочерних элементов
+     * @param {object} state
+     */
     addLevelChild(state) {
       state.employeesData.forEach((item, index) => {
         state.employeesData.forEach((itemChild) => {
@@ -43,6 +57,10 @@ export default new Vuex.Store({
         });
       });
     },
+    /**
+     * Устанавливает данные для статистики
+     * @param {object} state
+     */
     setStatistic(state) {
       let checkAges = [];
       let checkNames = [];
@@ -75,6 +93,10 @@ export default new Vuex.Store({
       checkAges.forEach((item) => state.agesEmployees.push(item));
       checkNames.forEach((item) => state.namesEmployees.push(item));
     },
+    /**
+     * Устанавливает процент каждого пола
+     * @param {object} state
+     */
     setPercentGender(state) {
       let genderValue = 0;
       state.genderCount.forEach((item) => {
@@ -84,14 +106,22 @@ export default new Vuex.Store({
         return (item = Math.floor((item / genderValue) * 100));
       });
     },
+    /**
+     * Записывает данные в localStorage
+     * @param {object} state
+     */
     setLocalStorageData(state) {
       localStorage.setItem("employeesData", JSON.stringify(state.employeesData));
       localStorage.setItem("agesEmployees", JSON.stringify(state.agesEmployees));
       localStorage.setItem("namesEmployees", JSON.stringify(state.namesEmployees));
       localStorage.setItem("genderCount", JSON.stringify(state.genderCount));
       localStorage.setItem("genderPercent", JSON.stringify(state.genderPercent));
-      localStorage.setItem("idCount", JSON.stringify(state.id));
+      localStorage.setItem("idCount", state.id);
     },
+    /**
+     * Очищает все данные
+     * @param {object} state
+     */
     clearData(state) {
       localStorage.clear();
       state.employeesData = [];

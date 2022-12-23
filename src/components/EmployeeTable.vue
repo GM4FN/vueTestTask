@@ -90,6 +90,13 @@ export default {
   },
   data() {
     return {
+      /**
+       * @param {object[]} fields
+       * @param {object} arrows
+       * @param {object[]} items
+       * @param {number[]} directionByIncrease
+       * @param {number[]} directionByDecrease
+       */
       fields: [
         { key: "name", label: "Имя" },
         { key: "gender", label: "Пол" },
@@ -97,13 +104,29 @@ export default {
         { key: "phone", label: "Телефон" },
       ],
       arrows: {
+        /**
+         * @param {object} down
+         * @param {object} up
+         */
         down: {
+          /**
+           * @param {boolean} name
+           * @param {boolean} gender
+           * @param {boolean} age
+           * @param {boolean} phone
+           */
           name: false,
           gender: false,
           age: false,
           phone: false,
         },
         up: {
+          /**
+           * @param {boolean} name
+           * @param {boolean} gender
+           * @param {boolean} age
+           * @param {boolean} phone
+           */
           name: true,
           gender: true,
           age: true,
@@ -116,20 +139,29 @@ export default {
     };
   },
   methods: {
+    /**
+     * Сортирует таблицу по заданному title(названию) и titleForSorting(тот же title, но первая буква Большая)
+     * @param {object} event Событие клика
+     * @param {string} title Название по которому сортируется(name,phone, и тд)
+     * @param {string} titleForSorting  Тот же title(С большой буквы начинается) только для sorting метода(менее громоздкий код)
+     */
     sort(event, title, titleForSorting) {
-      const buttonValue = event.target.value;
+      const buttonValue = event.target.closest("button").value;
       if (buttonValue === title + "Increase") {
         this.items = sorting["sort" + titleForSorting](this.$store.state, this.directionByIncrease);
-        this.arrows.up[title] = false;
-        this.arrows.down[title] = true;
-        event.target.value = title + "Decrease";
-      } else if (buttonValue === title + "Decrease") {
-        this.items = sorting["sort" + titleForSorting](this.$store.state, this.directionByDecrease);
         this.arrows.up[title] = true;
         this.arrows.down[title] = false;
-        event.target.value = title + "Increase";
+        event.target.closest("button").value = title + "Decrease";
+      } else if (buttonValue === title + "Decrease") {
+        this.items = sorting["sort" + titleForSorting](this.$store.state, this.directionByDecrease);
+        this.arrows.up[title] = false;
+        this.arrows.down[title] = true;
+        event.target.closest("button").value = title + "Increase";
       }
     },
+    /**
+     * Сортировка по умолчанию(как вводил пользователь)
+     */
     sortByDefault() {
       this.items = this.$store.state.employeesData;
       for (const key in this.arrows.down) {

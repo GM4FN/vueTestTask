@@ -16,16 +16,37 @@
 import ButtonDefaultAside from "./ButtonDefaultAside.vue";
 
 export default {
-  data() {
-    return {
-      buttonsAsideData: [
-        { id: 2, slot: "К сотрудникам", namePath: "employeeTableTab" },
-        { id: 3, slot: "К статистике", namePath: "statisticTab" },
-      ],
-    };
-  },
   components: {
     ButtonDefaultAside,
+  },
+  data() {
+    return {
+      /**
+       * @param {object[]} buttonsAsideData Массив объектов с данными для кнопок
+       */
+      buttonsAsideData: [
+        {
+          /**
+           * @param {number} id
+           * @param {string} slot
+           * @param {string} namePath
+           */
+          id: 2,
+          slot: "К сотрудникам",
+          namePath: "employeeTableTab",
+        },
+        {
+          /**
+           * @param {number} id
+           * @param {string} slot
+           * @param {string} namePath
+           */
+          id: 3,
+          slot: "К статистике",
+          namePath: "statisticTab",
+        },
+      ],
+    };
   },
 };
 </script>

@@ -1,35 +1,43 @@
 <template>
   <div>
-    <section class="statistic d-flex" v-if="statisticIsDisplay">
+    <section
+      class="statistic d-flex"
+      v-if="statisticIsDisplay">
       <bar-statistic />
       <pie-statistic />
     </section>
-    <statistic-form v-else-if="formIsDisplay" @update-display="showStatistic"/>
+    <statistic-form
+      v-else-if="formIsDisplay"
+      @update-display="showStatistic" />
   </div>
 </template>
 
 <script>
 import barStatistic from "../AgeEmployeeBar.vue";
 import pieStatistic from "../GenderEmployeePie.vue";
-import statisticForm from "../StatisticForm.vue"
+import statisticForm from "../StatisticForm.vue";
 
 export default {
   components: {
     barStatistic,
     pieStatistic,
-    statisticForm
+    statisticForm,
   },
   data() {
     return {
+      /**
+       * @param {boolean} formIsDisplay Отображение формы
+       * @param {boolean} statisticIsDisplay Отображение статистики
+       */
       formIsDisplay: true,
       statisticIsDisplay: false,
     };
   },
   methods: {
     showStatistic() {
-      this.formIsDisplay = false
-      this.statisticIsDisplay = true
-    }
+      this.formIsDisplay = false;
+      this.statisticIsDisplay = true;
+    },
   },
 };
 </script>
